@@ -1,4 +1,5 @@
 import { Hero } from "@/components/home/hero";
+import { ServicesPreview } from "@/components/home/services-preview";
 import { SiteHeader } from "@/components/site-header";
 
 export default function Home() {
@@ -8,11 +9,7 @@ export default function Home() {
 
       <main>
         <Hero />
-
-        <section
-          id="prestations"
-          className="min-h-[50vh] bg-timscare-beige"
-        />
+        <ServicesPreview />
       </main>
     </>
   );
