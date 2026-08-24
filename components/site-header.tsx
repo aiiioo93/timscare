@@ -34,20 +34,70 @@ export function SiteHeader() {
     <>
       <header className="absolute inset-x-0 top-0 z-50">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-6 md:h-24 md:px-8">
-          {/* Logo */}
-          <Link href="/" className="relative block h-12 w-32 md:h-16 md:w-40">
-            <Image
-              src="/brand/logo-main.jpeg"
-              alt="Timscare Institut"
-              fill
-              priority
-              className="object-contain"
-            />
+          {/* LOGOS */}
+          <Link href="/" className="relative z-10 flex items-center">
+            {/* SMARTPHONE */}
+            <div
+              className="
+                relative h-32 w-32
+                translate-y-[14%]
+                md:hidden
+              "
+            >
+              <Image
+                src="/brand/logo-mobile.png"
+                alt="Timscare Institut"
+                fill
+                priority
+                sizes="128px"
+                className="object-contain"
+              />
+            </div>
+
+            {/* TABLETTE */}
+            <div
+              className="
+                relative hidden h-20 w-56
+                md:block
+                lg:hidden
+              "
+            >
+              <Image
+                src="/brand/logo.png"
+                alt="Timscare Institut"
+                fill
+                priority
+                sizes="224px"
+                className="object-contain object-left"
+              />
+            </div>
+
+            {/* ORDINATEUR */}
+            <div
+              className="
+                relative hidden h-20 w-40
+                origin-left
+                scale-[3]
+                lg:block
+              "
+            >
+              <Image
+                src="/brand/logo.png"
+                alt="Timscare Institut"
+                fill
+                priority
+                sizes="480px"
+                className="object-contain object-left"
+              />
+            </div>
           </Link>
 
-          {/* Navigation ordinateur */}
-          <nav className="hidden items-center gap-8 text-sm font-medium text-timscare-brown lg:flex">
-            <Link href="/" className="transition-opacity hover:opacity-60">
+          {/* NAVIGATION ORDINATEUR */}
+          <nav className="relative z-20 hidden items-center gap-8 text-sm font-medium text-timscare-brown lg:flex">
+            <Link
+              href="/"
+              className="transition-opacity hover:opacity-60"
+            >
               Accueil
             </Link>
 
@@ -73,10 +123,11 @@ export function SiteHeader() {
             </Link>
           </nav>
 
-          {/* CTA ordinateur */}
+          {/* CTA ORDINATEUR */}
           <Link
             href="#prestations"
             className="
+              relative z-20
               hidden rounded-full bg-timscare-terracotta
               px-5 py-3 text-sm font-medium text-timscare-cream
               transition hover:opacity-90
@@ -86,14 +137,15 @@ export function SiteHeader() {
             Prendre rendez-vous
           </Link>
 
-          {/* Burger smartphone + tablette */}
+          {/* BURGER SMARTPHONE + TABLETTE */}
           <button
             type="button"
             aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen(true)}
             className="
-              flex h-12 w-12 items-center justify-center
+              relative z-20
+              flex h-12 w-12 shrink-0 items-center justify-center
               rounded-full border border-timscare-brown/15
               bg-timscare-cream/80 backdrop-blur-sm
               lg:hidden
@@ -108,14 +160,12 @@ export function SiteHeader() {
         </div>
       </header>
 
-      {/* Fond derrière le menu */}
+      {/* FOND DERRIÈRE LE MENU */}
       <button
         type="button"
         aria-label="Fermer le menu"
         onClick={closeMenu}
-        className={`menuOpen
-  ? "translate-x-0"
-  : "-translate-x-full"
+        className={`
           fixed inset-0 z-[80] bg-black/35
           transition-opacity duration-500
           lg:hidden
@@ -127,24 +177,24 @@ export function SiteHeader() {
         `}
       />
 
-      {/* Menu latéral */}
+      {/* MENU LATÉRAL */}
       <aside
         className={`
-            fixed bottom-0 right-0 top-0 z-[90]
-            flex w-[86%] max-w-[390px] flex-col
-            bg-timscare-brown px-7 py-6
-            text-timscare-cream
-            shadow-2xl
-            transition-transform duration-500 ease-out
-            lg:hidden
-            ${
+          fixed bottom-0 right-0 top-0 z-[90]
+          flex w-[86%] max-w-[390px] flex-col
+          bg-timscare-brown px-7 py-6
+          text-timscare-cream
+          shadow-2xl
+          transition-transform duration-500 ease-out
+          lg:hidden
+          ${
             menuOpen
-                ? "translate-x-0"
-                : "translate-x-full"
+              ? "translate-x-0"
+              : "translate-x-full"
           }
         `}
       >
-        {/* Haut du menu */}
+        {/* HAUT DU MENU */}
         <div className="flex items-center justify-between">
           <div>
             <p className="text-lg font-medium tracking-[0.16em]">
@@ -170,12 +220,12 @@ export function SiteHeader() {
           </button>
         </div>
 
-        {/* Navigation */}
+        {/* NAVIGATION MOBILE */}
         <nav className="mt-16 flex flex-col">
           <Link
             href="/"
             onClick={closeMenu}
-            className="group flex items-center gap-5 border-b border-timscare-cream/15 py-5"
+            className="flex items-center gap-5 border-b border-timscare-cream/15 py-5"
           >
             <span className="text-[10px] text-timscare-beige/50">
               01
@@ -189,7 +239,7 @@ export function SiteHeader() {
           <Link
             href="#prestations"
             onClick={closeMenu}
-            className="group flex items-center gap-5 border-b border-timscare-cream/15 py-5"
+            className="flex items-center gap-5 border-b border-timscare-cream/15 py-5"
           >
             <span className="text-[10px] text-timscare-beige/50">
               02
@@ -203,7 +253,7 @@ export function SiteHeader() {
           <Link
             href="#timscare"
             onClick={closeMenu}
-            className="group flex items-center gap-5 border-b border-timscare-cream/15 py-5"
+            className="flex items-center gap-5 border-b border-timscare-cream/15 py-5"
           >
             <span className="text-[10px] text-timscare-beige/50">
               03
@@ -217,7 +267,7 @@ export function SiteHeader() {
           <Link
             href="#contact"
             onClick={closeMenu}
-            className="group flex items-center gap-5 border-b border-timscare-cream/15 py-5"
+            className="flex items-center gap-5 border-b border-timscare-cream/15 py-5"
           >
             <span className="text-[10px] text-timscare-beige/50">
               04
@@ -229,7 +279,7 @@ export function SiteHeader() {
           </Link>
         </nav>
 
-        {/* Bas du menu */}
+        {/* BAS DU MENU */}
         <div className="mt-auto">
           <Link
             href="#prestations"
