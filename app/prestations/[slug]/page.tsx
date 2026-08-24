@@ -117,7 +117,7 @@ export default async function ServicePage({
 
             <div className="relative z-10">
               <Link
-                href={`/prestations#${service.categoryId}`}
+                href={`/prestations/${service.categoryId}`}
                 className="
                   inline-flex items-center gap-2
                   text-[11px] font-medium
@@ -131,7 +131,7 @@ export default async function ServicePage({
                   strokeWidth={1.5}
                 />
 
-                Retour aux prestations
+                Retour à {service.categoryTitle}
               </Link>
 
               <p
