@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowDown,
@@ -8,6 +9,7 @@ import {
   UserRound,
 } from "lucide-react";
 
+import { BackToTopButton } from "@/components/presentation/back-to-top-button";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
@@ -40,6 +42,74 @@ const values = [
   },
 ];
 
+/* =========================================================
+   PHOTO DU HERO
+
+   Plus tard :
+
+   public/timscare/hero-timscare.webp
+
+   puis :
+
+   const heroImage =
+     "/timscare/hero-timscare.webp";
+   ========================================================= */
+
+const heroImage = "";
+
+/* =========================================================
+   CONTOUR ORGANIQUE
+   ========================================================= */
+
+function createWavyCirclePath() {
+  const points = 260;
+
+  const centerX = 200;
+  const centerY = 200;
+  const baseRadius = 169;
+
+  let path = "";
+
+  for (let index = 0; index <= points; index++) {
+    const angle =
+      (index / points) * Math.PI * 2;
+
+    const waveOne =
+      Math.sin(angle * 12) * 4.2;
+
+    const waveTwo =
+      Math.sin(angle * 7 + 0.7) * 2.4;
+
+    const waveThree =
+      Math.sin(angle * 19 + 1.3) * 1.1;
+
+    const radius =
+      baseRadius +
+      waveOne +
+      waveTwo +
+      waveThree;
+
+    const x =
+      centerX +
+      Math.cos(angle) * radius;
+
+    const y =
+      centerY +
+      Math.sin(angle) * radius;
+
+    if (index === 0) {
+      path = `M ${x.toFixed(2)} ${y.toFixed(2)}`;
+    } else {
+      path += ` L ${x.toFixed(2)} ${y.toFixed(2)}`;
+    }
+  }
+
+  return `${path} Z`;
+}
+
+const wavyCirclePath =
+  createWavyCirclePath();
+
 export default function TimscarePage() {
   return (
     <>
@@ -48,99 +118,522 @@ export default function TimscarePage() {
       <main className="overflow-x-clip">
         {/* =====================================================
             HERO
-            Toujours contenu dans l'écran au chargement
             ===================================================== */}
 
         <section
+          id="hero"
           className="
-            relative h-[100dvh]
+            relative
+            h-[100dvh]
             overflow-hidden
             bg-timscare-cream
-            pt-20
-
-            md:pt-24
           "
         >
-          {/* FORMES DE FOND */}
-          <div
-            className="
-              pointer-events-none absolute
-              -right-[42%] -top-[8%]
-              aspect-square w-[95%]
-              rounded-full
-              bg-timscare-beige/50
-
-              sm:-right-[25%] sm:w-[70%]
-
-              lg:-right-[12%] lg:w-[48%]
-            "
-          />
+          {/* ===================================================
+              GRAND CERCLE / PHOTO
+              =================================================== */}
 
           <div
             className="
-              pointer-events-none absolute
-              -bottom-[38%] -left-[38%]
-              aspect-square w-[85%]
-              rounded-full
-              bg-timscare-beige/25
+              absolute
 
-              lg:w-[42%]
-            "
-          />
+              -right-[48%]
+              top-[8%]
 
-          <div
-            className="
-              relative mx-auto grid h-full
-              w-full max-w-7xl
-              grid-rows-[auto_1fr]
-              px-5 pb-5
+              aspect-square
+              w-[112%]
 
-              sm:px-6 sm:pb-6
+              sm:-right-[28%]
+              sm:top-[3%]
+              sm:w-[78%]
 
-              md:px-8 md:pb-8
+              md:-right-[18%]
+              md:w-[65%]
 
-              lg:grid-cols-[0.95fr_1.05fr]
-              lg:grid-rows-1
-              lg:items-center
-              lg:gap-14
+              lg:-right-[8%]
+              lg:-top-[10%]
+              lg:w-[48%]
             "
           >
-            {/* TEXTE */}
-            <div
+            {/* ===============================================
+                LIGNE ORGANIQUE / SERPENT
+                =============================================== */}
+
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 400 400"
               className="
-                relative z-10
-                flex flex-col justify-center
-                pt-3
-
-                sm:pt-5
-
-                lg:pt-0
+                pointer-events-none
+                absolute
+                -inset-[10%]
+                z-[4]
+                h-[120%]
+                w-[120%]
+                overflow-visible
               "
             >
-              <p
-                className="
-                  text-[10px] font-medium
-                  uppercase tracking-[0.32em]
-                  text-timscare-terracotta
+              <defs>
+                <filter
+                  id="timscareSnakeGlow"
+                  x="-50%"
+                  y="-50%"
+                  width="200%"
+                  height="200%"
+                >
+                  <feGaussianBlur
+                    stdDeviation="2.4"
+                    result="blur"
+                  />
 
-                  sm:text-xs
-                "
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+
+                <linearGradient
+                  id="timscareSnakeGradient"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="#af561e"
+                    stopOpacity="0.12"
+                  />
+
+                  <stop
+                    offset="45%"
+                    stopColor="#af561e"
+                    stopOpacity="0.95"
+                  />
+
+                  <stop
+                    offset="100%"
+                    stopColor="#f2d7b8"
+                    stopOpacity="0.12"
+                  />
+                </linearGradient>
+              </defs>
+
+              {/* TRACE */}
+
+              <path
+                d={wavyCirclePath}
+                fill="none"
+                stroke="rgba(72,36,18,0.07)"
+                strokeWidth="1"
+              />
+
+              {/* HALO */}
+
+              <path
+                d={wavyCirclePath}
+                fill="none"
+                stroke="rgba(175,86,30,0.08)"
+                strokeWidth="6"
+                opacity="0.35"
+              />
+
+              {/* SEGMENT PRINCIPAL */}
+
+              <path
+                d={wavyCirclePath}
+                fill="none"
+                stroke="url(#timscareSnakeGradient)"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeDasharray="95 1010"
+                filter="url(#timscareSnakeGlow)"
               >
-                L’univers Timscare
-              </p>
+                <animate
+                  attributeName="stroke-dashoffset"
+                  from="0"
+                  to="-1105"
+                  dur="8.5s"
+                  repeatCount="indefinite"
+                />
+              </path>
+
+              {/* TRAÎNÉE */}
+
+              <path
+                d={wavyCirclePath}
+                fill="none"
+                stroke="#af561e"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeDasharray="180 925"
+                opacity="0.18"
+              >
+                <animate
+                  attributeName="stroke-dashoffset"
+                  from="-40"
+                  to="-1145"
+                  dur="8.5s"
+                  repeatCount="indefinite"
+                />
+              </path>
+
+              {/* PETIT SEGMENT */}
+
+              <path
+                d={wavyCirclePath}
+                fill="none"
+                stroke="#482412"
+                strokeWidth="0.9"
+                strokeLinecap="round"
+                strokeDasharray="32 1073"
+                opacity="0.35"
+              >
+                <animate
+                  attributeName="stroke-dashoffset"
+                  from="25"
+                  to="-1080"
+                  dur="8.5s"
+                  repeatCount="indefinite"
+                />
+              </path>
+            </svg>
+
+            {/* CERCLES FIXES */}
+
+            <div
+              className="
+                pointer-events-none
+                absolute -inset-5
+                rounded-full
+                border
+                border-timscare-brown/[0.045]
+
+                sm:-inset-7
+
+                lg:-inset-10
+              "
+            />
+
+            <div
+              className="
+                pointer-events-none
+                absolute -inset-10
+                rounded-full
+                border
+                border-timscare-brown/[0.02]
+
+                sm:-inset-14
+
+                lg:-inset-20
+              "
+            />
+
+            {/* ===============================================
+                PHOTO
+                =============================================== */}
+
+            <div
+              className="
+                relative
+                h-full w-full
+
+                overflow-hidden
+                rounded-full
+
+                bg-timscare-beige
+
+                shadow-[0_35px_100px_rgba(72,36,18,0.12)]
+              "
+            >
+              {heroImage ? (
+                <Image
+                  src={heroImage}
+                  alt="L'univers Timscare"
+                  fill
+                  priority
+                  sizes="
+                    (max-width: 640px) 112vw,
+                    (max-width: 1024px) 75vw,
+                    48vw
+                  "
+                  className="object-cover"
+                />
+              ) : (
+                <div
+                  className="
+                    absolute inset-0
+
+                    bg-[radial-gradient(circle_at_62%_28%,#fffaf5_0%,#f2d7b8_29%,rgba(175,86,30,0.68)_67%,#482412_115%)]
+                  "
+                />
+              )}
+
+              <div
+                className="
+                  pointer-events-none
+                  absolute
+                  right-[8%] top-[9%]
+
+                  h-[38%] w-[38%]
+
+                  rounded-full
+                  bg-white/25
+                  blur-3xl
+                "
+              />
+
+              <div
+                className="
+                  pointer-events-none
+                  absolute inset-0
+
+                  bg-gradient-to-br
+                  from-white/10
+                  via-transparent
+                  to-timscare-brown/15
+                "
+              />
+
+              <div
+                className="
+                  pointer-events-none
+                  absolute inset-3
+
+                  rounded-full
+
+                  border
+                  border-white/20
+
+                  sm:inset-4
+
+                  lg:inset-5
+                "
+              />
+            </div>
+
+            {/* ===============================================
+                DÉCOUVRIR DESKTOP
+                =============================================== */}
+
+            <a
+              href="#philosophie"
+              aria-label="Découvrir l'univers Timscare"
+              className="
+                group
+                absolute
+                z-30
+
+                hidden
+
+                items-center
+                justify-center
+
+                rounded-full
+
+                lg:left-[47%]
+                lg:top-[82%]
+
+                lg:flex
+                lg:h-[118px]
+                lg:w-[118px]
+              "
+            >
+              <DiscoverTarget />
+            </a>
+          </div>
+
+          {/* ===================================================
+              DÉCOUVRIR MOBILE
+              =================================================== */}
+
+          <a
+            href="#philosophie"
+            aria-label="Découvrir l'univers Timscare"
+            className="
+              group
+
+              absolute
+
+              bottom-[12%]
+              right-[7%]
+
+              z-30
+
+              flex
+              h-[86px]
+              w-[86px]
+
+              items-center
+              justify-center
+
+              rounded-full
+
+              sm:bottom-[13%]
+              sm:right-[9%]
+              sm:h-[96px]
+              sm:w-[96px]
+
+              md:bottom-[14%]
+              md:right-[10%]
+              md:h-[106px]
+              md:w-[106px]
+
+              lg:hidden
+            "
+          >
+            <DiscoverTarget />
+          </a>
+
+          {/* ===================================================
+              DÉCOR BAS GAUCHE
+              =================================================== */}
+
+          <div
+            className="
+              pointer-events-none
+              absolute
+
+              -bottom-[42%]
+              -left-[40%]
+
+              aspect-square
+              w-[92%]
+
+              rounded-full
+
+              border
+              border-timscare-brown/5
+
+              sm:w-[65%]
+
+              lg:w-[40%]
+            "
+          />
+
+          {/* ===================================================
+              TEXTES
+              =================================================== */}
+
+          <div
+            className="
+              pointer-events-none
+              absolute inset-0
+              z-20
+
+              mx-auto
+              w-full
+              max-w-7xl
+
+              px-5
+
+              sm:px-6
+
+              md:px-8
+            "
+          >
+            {/* ===============================================
+                TITRE
+                =============================================== */}
+
+            <div
+              className="
+                pointer-events-auto
+                absolute
+
+                left-5
+                right-[9%]
+                top-[14%]
+
+                sm:left-6
+                sm:right-[24%]
+                sm:top-[15%]
+
+                md:left-8
+                md:right-[32%]
+                md:top-[16%]
+
+                lg:bottom-[10%]
+                lg:left-8
+                lg:right-auto
+                lg:top-auto
+                lg:w-[58%]
+              "
+            >
+              <div className="flex items-center gap-3">
+                <span
+                  className="
+                    flex h-9 w-9
+                    shrink-0
+                    items-center
+                    justify-center
+
+                    rounded-full
+
+                    bg-timscare-terracotta
+                    text-timscare-cream
+                  "
+                >
+                  <Sparkles
+                    size={14}
+                    strokeWidth={1.5}
+                  />
+                </span>
+
+                <div>
+                  <p
+                    className="
+                      text-[8px]
+                      font-medium
+                      uppercase
+                      tracking-[0.28em]
+                      text-timscare-terracotta
+
+                      sm:text-[9px]
+
+                      md:text-[10px]
+                    "
+                  >
+                    L’univers Timscare
+                  </p>
+
+                  <div
+                    className="
+                      mt-2
+                      h-px
+                      w-10
+                      bg-timscare-terracotta/35
+
+                      lg:hidden
+                    "
+                  />
+                </div>
+              </div>
 
               <h1
                 className="
-                  mt-4 max-w-2xl
-                  text-[clamp(2.6rem,11vw,4rem)]
+                  mt-5
+
+                  max-w-[22rem]
+
+                  text-[clamp(2.8rem,12vw,3.8rem)]
+
                   font-medium
-                  leading-[0.96]
-                  tracking-tight
+
+                  leading-[0.9]
+
+                  tracking-[-0.055em]
+
                   text-timscare-brown
 
-                  sm:mt-5
+                  sm:max-w-xl
+                  sm:text-[clamp(3.4rem,10vw,4.8rem)]
 
-                  lg:text-[clamp(3.8rem,5.2vw,5.4rem)]
+                  md:text-[clamp(4rem,8vw,5.3rem)]
+
+                  lg:mt-6
+                  lg:max-w-4xl
+                  lg:text-[clamp(4.8rem,6.5vw,6.7rem)]
+                  lg:leading-[0.92]
                 "
               >
                 Prendre soin
@@ -149,14 +642,85 @@ export default function TimscarePage() {
                 <br />
                 autrement.
               </h1>
+            </div>
+
+            {/* ===============================================
+                DESCRIPTION
+                =============================================== */}
+
+            <div
+              className="
+                pointer-events-auto
+                absolute
+
+                left-5
+                top-[52%]
+
+                w-[69%]
+                max-w-[315px]
+
+                border-l
+                border-timscare-terracotta/25
+
+                pl-4
+
+                sm:left-6
+                sm:top-[49%]
+                sm:w-[58%]
+                sm:max-w-md
+
+                md:left-8
+                md:top-[48%]
+
+                lg:left-[54%]
+                lg:right-auto
+                lg:top-[53%]
+
+                lg:w-[34%]
+                lg:max-w-none
+
+                lg:border-l-0
+                lg:pl-0
+              "
+            >
+              <div
+                className="
+                  mb-3
+                  flex
+                  items-center
+                  gap-2
+
+                  lg:hidden
+                "
+              >
+                <span
+                  className="
+                    h-1.5
+                    w-1.5
+                    rounded-full
+                    bg-timscare-terracotta
+                  "
+                />
+
+                <span
+                  className="
+                    text-[8px]
+                    font-medium
+                    uppercase
+                    tracking-[0.26em]
+                    text-timscare-brown/35
+                  "
+                >
+                  Peau · bien-être
+                </span>
+              </div>
 
               <p
                 className="
-                  mt-4 max-w-xl
-                  text-sm leading-6
-                  text-timscare-brown/65
+                  text-[13px]
+                  leading-[1.65]
+                  text-timscare-brown/60
 
-                  sm:mt-5
                   sm:text-base
                   sm:leading-7
 
@@ -164,196 +728,38 @@ export default function TimscarePage() {
                   lg:leading-8
                 "
               >
-                Timscare est un univers dédié au soin de la peau et au
-                bien-être, pensé pour offrir à chacune et chacun un moment
-                d’attention, de douceur et de reconnexion.
+                Timscare est un univers dédié au soin
+                de la peau et au bien-être, pensé pour
+                offrir à chacune et chacun un moment
+                d’attention, de douceur et de
+                reconnexion.
               </p>
-
-              <div className="mt-5 flex flex-wrap gap-2 sm:mt-6 sm:gap-3">
-                <Link
-                  href="/prestations"
-                  className="
-                    inline-flex min-h-12
-                    items-center justify-center
-                    gap-2 rounded-full
-                    bg-timscare-terracotta
-                    px-5
-                    text-xs font-medium
-                    text-timscare-cream
-                    transition
-
-                    hover:opacity-90
-
-                    sm:px-6
-                    sm:text-sm
-                  "
-                >
-                  Découvrir les soins
-
-                  <ArrowUpRight
-                    size={15}
-                    strokeWidth={1.6}
-                  />
-                </Link>
-
-                <Link
-                  href="/contact"
-                  className="
-                    inline-flex min-h-12
-                    items-center justify-center
-                    rounded-full
-                    border
-                    border-timscare-brown/15
-                    px-5
-                    text-xs font-medium
-                    text-timscare-brown
-                    transition
-
-                    hover:bg-timscare-beige/40
-
-                    sm:px-6
-                    sm:text-sm
-                  "
-                >
-                  Nous contacter
-                </Link>
-              </div>
             </div>
-
-            {/* VISUEL */}
-            <div
-              className="
-                relative z-10
-                mt-4 h-full min-h-0
-                overflow-hidden
-                rounded-[1.8rem]
-                bg-timscare-brown
-
-                sm:mt-5
-
-                lg:mt-0
-                lg:h-[min(68dvh,620px)]
-                lg:rounded-[2.75rem]
-              "
-            >
-              {/* Placeholder futur portrait / photo institut */}
-              <div
-                className="
-                  absolute inset-0
-                  bg-[radial-gradient(circle_at_68%_24%,#fef7ef_0%,#f2d7b8_27%,#af561e_59%,#482412_100%)]
-                "
-              />
-
-              <div
-                className="
-                  absolute
-                  right-[10%] top-[10%]
-                  h-[38%] w-[42%]
-                  rounded-full
-                  bg-white/15
-                  blur-3xl
-                "
-              />
-
-              <div
-                className="
-                  absolute inset-3
-                  rounded-[1.4rem]
-                  border
-                  border-timscare-cream/15
-
-                  sm:inset-4
-
-                  lg:inset-5
-                  lg:rounded-[2.25rem]
-                "
-              />
-
-              <div
-                className="
-                  absolute inset-x-0 bottom-0
-                  bg-gradient-to-t
-                  from-timscare-brown/80
-                  via-timscare-brown/25
-                  to-transparent
-                  px-6 pb-6 pt-20
-
-                  sm:px-8 sm:pb-8
-                "
-              >
-                <p
-                  className="
-                    text-[9px]
-                    uppercase
-                    tracking-[0.35em]
-                    text-timscare-beige/70
-                  "
-                >
-                  Timscare Institut
-                </p>
-
-                <p
-                  className="
-                    mt-2 max-w-sm
-                    text-xl font-medium
-                    leading-tight
-                    text-timscare-cream
-
-                    sm:text-2xl
-                  "
-                >
-                  La peau au centre de l’expérience.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* INDICATION SCROLL */}
-          <div
-            className="
-              pointer-events-none
-              absolute bottom-5 left-1/2 z-20
-              hidden -translate-x-1/2
-
-              lg:flex
-              lg:flex-col
-              lg:items-center
-              lg:gap-2
-            "
-          >
-            <span
-              className="
-                text-[9px]
-                uppercase
-                tracking-[0.28em]
-                text-timscare-brown/40
-              "
-            >
-              Découvrir
-            </span>
-
-            <ArrowDown
-              size={15}
-              strokeWidth={1.4}
-              className="text-timscare-terracotta"
-            />
           </div>
         </section>
 
         {/* =====================================================
-            INTRO / PHILOSOPHIE
+            PHILOSOPHIE
             ===================================================== */}
 
-        <section className="bg-[#fffaf5]">
+        <section
+          id="philosophie"
+          className="bg-[#fffaf5]"
+        >
           <div
             className="
-              mx-auto grid max-w-7xl
+              mx-auto
+              grid
+              max-w-7xl
               gap-10
-              px-5 py-20
+
+              px-5
+              py-20
 
               sm:px-6
 
-              md:px-8 md:py-28
+              md:px-8
+              md:py-28
 
               lg:grid-cols-[0.8fr_1.2fr]
               lg:gap-20
@@ -375,8 +781,11 @@ export default function TimscarePage() {
 
               <h2
                 className="
-                  mt-5 max-w-lg
-                  text-4xl font-medium
+                  mt-5
+                  max-w-lg
+
+                  text-4xl
+                  font-medium
                   leading-[1.02]
                   tracking-tight
                   text-timscare-brown
@@ -392,9 +801,13 @@ export default function TimscarePage() {
 
             <div
               className="
-                flex flex-col justify-center
+                flex
+                flex-col
+                justify-center
+
                 border-t
                 border-timscare-brown/10
+
                 pt-8
 
                 lg:border-l
@@ -406,31 +819,38 @@ export default function TimscarePage() {
               <p
                 className="
                   max-w-2xl
-                  text-lg leading-8
+
+                  text-lg
+                  leading-8
                   text-timscare-brown/75
 
                   md:text-xl
                   md:leading-9
                 "
               >
-                Chaque peau possède ses propres besoins, son histoire et son
-                équilibre. L’approche Timscare privilégie des soins choisis
-                selon vos attentes, dans un environnement chaleureux et
-                apaisant.
+                Chaque peau possède ses propres besoins,
+                son histoire et son équilibre. L’approche
+                Timscare privilégie des soins choisis selon
+                vos attentes, dans un environnement
+                chaleureux et apaisant.
               </p>
 
               <p
                 className="
-                  mt-6 max-w-2xl
-                  text-sm leading-7
+                  mt-6
+                  max-w-2xl
+
+                  text-sm
+                  leading-7
                   text-timscare-brown/55
 
                   sm:text-base
                 "
               >
-                L’objectif est simple : prendre le temps de comprendre votre
-                peau, proposer un moment adapté et vous permettre de repartir
-                avec une sensation de bien-être et de confiance.
+                L’objectif est simple : prendre le temps de
+                comprendre votre peau, proposer un moment
+                adapté et vous permettre de repartir avec
+                une sensation de bien-être et de confiance.
               </p>
             </div>
           </div>
@@ -443,17 +863,22 @@ export default function TimscarePage() {
         <section className="bg-timscare-beige">
           <div
             className="
-              mx-auto max-w-7xl
-              px-5 py-20
+              mx-auto
+              max-w-7xl
+
+              px-5
+              py-20
 
               sm:px-6
 
-              md:px-8 md:py-28
+              md:px-8
+              md:py-28
             "
           >
             <div
               className="
-                grid gap-7
+                grid
+                gap-7
 
                 lg:grid-cols-[0.75fr_1.25fr]
                 lg:items-end
@@ -476,7 +901,9 @@ export default function TimscarePage() {
                 <h2
                   className="
                     mt-5
-                    text-4xl font-medium
+
+                    text-4xl
+                    font-medium
                     leading-[1.02]
                     tracking-tight
                     text-timscare-brown
@@ -491,7 +918,9 @@ export default function TimscarePage() {
               <p
                 className="
                   max-w-xl
-                  text-sm leading-7
+
+                  text-sm
+                  leading-7
                   text-timscare-brown/60
 
                   sm:text-base
@@ -499,14 +928,18 @@ export default function TimscarePage() {
                   lg:ml-auto
                 "
               >
-                Une expérience pensée autour de la personne, de sa peau et du
-                moment qu’elle vient s’accorder.
+                Une expérience pensée autour de la
+                personne, de sa peau et du moment qu’elle
+                vient s’accorder.
               </p>
             </div>
 
             <div
               className="
-                mt-12 grid gap-3
+                mt-12
+
+                grid
+                gap-3
 
                 sm:grid-cols-2
 
@@ -522,11 +955,17 @@ export default function TimscarePage() {
                   <article
                     key={value.number}
                     className="
-                      group relative overflow-hidden
+                      group
+                      relative
+                      overflow-hidden
+
                       rounded-[1.8rem]
+
                       border
                       border-timscare-brown/10
+
                       bg-timscare-cream
+
                       p-6
 
                       sm:p-7
@@ -535,12 +974,7 @@ export default function TimscarePage() {
                       lg:p-8
                     "
                   >
-                    <div
-                      className="
-                        flex items-center
-                        justify-between
-                      "
-                    >
+                    <div className="flex items-center justify-between">
                       <span
                         className="
                           text-[10px]
@@ -553,11 +987,17 @@ export default function TimscarePage() {
 
                       <div
                         className="
-                          flex h-11 w-11
+                          flex
+                          h-11
+                          w-11
+
                           items-center
                           justify-center
+
                           rounded-full
+
                           bg-timscare-beige/60
+
                           text-timscare-brown
                         "
                       >
@@ -585,7 +1025,9 @@ export default function TimscarePage() {
                       <p
                         className="
                           mt-4
-                          text-sm leading-6
+
+                          text-sm
+                          leading-6
                           text-timscare-brown/60
                         "
                       >
@@ -605,18 +1047,29 @@ export default function TimscarePage() {
 
         <section
           className="
-            relative overflow-hidden
+            relative
+            overflow-hidden
+
             bg-timscare-brown
+
             text-timscare-cream
           "
         >
           <div
             className="
-              pointer-events-none absolute
-              -right-[35%] top-1/2
-              aspect-square w-[95%]
+              pointer-events-none
+              absolute
+
+              -right-[35%]
+              top-1/2
+
+              aspect-square
+              w-[95%]
+
               -translate-y-1/2
+
               rounded-full
+
               border
               border-timscare-beige/10
 
@@ -629,13 +1082,21 @@ export default function TimscarePage() {
 
           <div
             className="
-              relative mx-auto grid
-              max-w-7xl gap-12
-              px-5 py-20
+              relative
+
+              mx-auto
+
+              grid
+              max-w-7xl
+              gap-12
+
+              px-5
+              py-20
 
               sm:px-6
 
-              md:px-8 md:py-28
+              md:px-8
+              md:py-28
 
               lg:grid-cols-[1.15fr_.85fr]
               lg:items-center
@@ -658,8 +1119,11 @@ export default function TimscarePage() {
 
               <h2
                 className="
-                  mt-5 max-w-3xl
-                  text-4xl font-medium
+                  mt-5
+                  max-w-3xl
+
+                  text-4xl
+                  font-medium
                   leading-[1.02]
                   tracking-tight
 
@@ -677,30 +1141,42 @@ export default function TimscarePage() {
             <div>
               <p
                 className="
-                  text-base leading-7
+                  text-base
+                  leading-7
                   text-timscare-beige/75
 
                   lg:text-lg
                   lg:leading-8
                 "
               >
-                L’identité de Timscare s’inspire d’un univers chaleureux et
-                pluriel. Les soins s’adressent à des peaux, des besoins et des
-                profils différents.
+                L’identité de Timscare s’inspire d’un
+                univers chaleureux et pluriel. Les soins
+                s’adressent à des peaux, des besoins et
+                des profils différents.
               </p>
 
               <Link
                 href="/prestations"
                 className="
-                  mt-8 inline-flex
+                  mt-8
+
+                  inline-flex
                   min-h-13
+
                   items-center
-                  justify-center gap-3
+                  justify-center
+                  gap-3
+
                   rounded-full
+
                   bg-timscare-terracotta
+
                   px-6
-                  text-sm font-medium
+
+                  text-sm
+                  font-medium
                   text-timscare-cream
+
                   transition
 
                   hover:opacity-90
@@ -718,26 +1194,35 @@ export default function TimscarePage() {
         </section>
 
         {/* =====================================================
-            LOCALISATION / CTA
+            CTA FINAL
             ===================================================== */}
 
         <section className="bg-timscare-cream">
           <div
             className="
-              mx-auto max-w-7xl
-              px-5 py-20
+              mx-auto
+              max-w-7xl
+
+              px-5
+              py-20
 
               sm:px-6
 
-              md:px-8 md:py-28
+              md:px-8
+              md:py-28
             "
           >
             <div
               className="
-                relative overflow-hidden
+                relative
+                overflow-hidden
+
                 rounded-[2rem]
+
                 bg-timscare-terracotta
+
                 p-7
+
                 text-timscare-cream
 
                 sm:p-9
@@ -754,9 +1239,16 @@ export default function TimscarePage() {
               <div
                 className="
                   pointer-events-none
-                  absolute -right-20 -top-24
-                  h-72 w-72
+                  absolute
+
+                  -right-20
+                  -top-24
+
+                  h-72
+                  w-72
+
                   rounded-full
+
                   border
                   border-timscare-cream/10
                 "
@@ -776,8 +1268,11 @@ export default function TimscarePage() {
 
                 <h2
                   className="
-                    mt-5 max-w-3xl
-                    text-3xl font-medium
+                    mt-5
+                    max-w-3xl
+
+                    text-3xl
+                    font-medium
                     leading-[1.03]
                     tracking-tight
 
@@ -791,23 +1286,31 @@ export default function TimscarePage() {
 
                 <p
                   className="
-                    mt-5 max-w-xl
-                    text-sm leading-6
+                    mt-5
+                    max-w-xl
+
+                    text-sm
+                    leading-6
                     text-timscare-cream/70
 
                     sm:text-base
                     sm:leading-7
                   "
                 >
-                  Retrouvez Timscare à Bagnolet et découvrez le soin qui
-                  correspond à vos besoins.
+                  Retrouvez Timscare à Bagnolet et
+                  découvrez le soin qui correspond à vos
+                  besoins.
                 </p>
               </div>
 
               <div
                 className="
-                  relative mt-8
-                  flex flex-col gap-2
+                  relative
+                  mt-8
+
+                  flex
+                  flex-col
+                  gap-2
 
                   sm:flex-row
 
@@ -817,13 +1320,22 @@ export default function TimscarePage() {
                 <Link
                   href="/prestations"
                   className="
-                    inline-flex min-h-14
-                    items-center justify-center
+                    inline-flex
+                    min-h-14
+
+                    items-center
+                    justify-center
+
                     rounded-full
+
                     bg-timscare-cream
+
                     px-7
-                    text-sm font-medium
+
+                    text-sm
+                    font-medium
                     text-timscare-brown
+
                     transition
 
                     hover:opacity-90
@@ -835,14 +1347,23 @@ export default function TimscarePage() {
                 <Link
                   href="/contact"
                   className="
-                    inline-flex min-h-14
-                    items-center justify-center
+                    inline-flex
+                    min-h-14
+
+                    items-center
+                    justify-center
+
                     rounded-full
+
                     border
                     border-timscare-cream/25
+
                     px-7
-                    text-sm font-medium
+
+                    text-sm
+                    font-medium
                     text-timscare-cream
+
                     transition
 
                     hover:bg-timscare-cream/10
@@ -855,6 +1376,261 @@ export default function TimscarePage() {
           </div>
         </section>
       </main>
+
+      <BackToTopButton />
+    </>
+  );
+}
+
+/* =========================================================
+   BOUTON DÉCOUVRIR
+   ========================================================= */
+
+function DiscoverTarget() {
+  return (
+    <>
+      <span
+        className="
+          pointer-events-none
+          absolute inset-0
+
+          rounded-full
+
+          border
+          border-timscare-terracotta/50
+
+          animate-ping
+          motion-reduce:animate-none
+        "
+        style={{
+          animationDuration: "2.2s",
+        }}
+      />
+
+      <span
+        className="
+          pointer-events-none
+          absolute -inset-3
+
+          rounded-full
+
+          border
+          border-timscare-terracotta/20
+
+          animate-ping
+          motion-reduce:animate-none
+        "
+        style={{
+          animationDuration: "2.8s",
+          animationDelay: "0.55s",
+        }}
+      />
+
+      <span
+        className="
+          pointer-events-none
+          absolute inset-[3px]
+
+          rounded-full
+
+          border
+          border-timscare-brown/20
+        "
+      />
+
+      <span
+        className="
+          pointer-events-none
+          absolute inset-[9px]
+
+          rounded-full
+
+          border
+          border-dashed
+          border-timscare-brown/40
+
+          animate-spin
+          motion-reduce:animate-none
+        "
+        style={{
+          animationDuration: "10s",
+        }}
+      />
+
+      <span
+        className="
+          pointer-events-none
+          absolute inset-[20px]
+
+          rounded-full
+
+          border
+          border-timscare-terracotta/60
+
+          transition-transform
+          duration-500
+
+          group-hover:scale-110
+
+          sm:inset-[22px]
+
+          lg:inset-[25px]
+        "
+      />
+
+      <span
+        className="
+          pointer-events-none
+          absolute
+          left-1/2
+          top-[-3px]
+
+          h-[16px]
+          w-px
+
+          -translate-x-1/2
+
+          bg-timscare-terracotta
+
+          lg:h-[19px]
+        "
+      />
+
+      <span
+        className="
+          pointer-events-none
+          absolute
+          bottom-[-3px]
+          left-1/2
+
+          h-[16px]
+          w-px
+
+          -translate-x-1/2
+
+          bg-timscare-terracotta
+
+          lg:h-[19px]
+        "
+      />
+
+      <span
+        className="
+          pointer-events-none
+          absolute
+          left-[-3px]
+          top-1/2
+
+          h-px
+          w-[16px]
+
+          -translate-y-1/2
+
+          bg-timscare-terracotta
+
+          lg:w-[19px]
+        "
+      />
+
+      <span
+        className="
+          pointer-events-none
+          absolute
+          right-[-3px]
+          top-1/2
+
+          h-px
+          w-[16px]
+
+          -translate-y-1/2
+
+          bg-timscare-terracotta
+
+          lg:w-[19px]
+        "
+      />
+
+      <span
+        className="
+          relative z-10
+
+          flex
+          h-11
+          w-11
+
+          items-center
+          justify-center
+
+          overflow-hidden
+
+          rounded-full
+
+          bg-timscare-brown
+
+          text-timscare-cream
+
+          shadow-[0_12px_35px_rgba(72,36,18,0.28)]
+
+          transition-all
+          duration-500
+
+          group-hover:scale-110
+          group-hover:bg-timscare-terracotta
+
+          sm:h-12
+          sm:w-12
+
+          lg:h-14
+          lg:w-14
+        "
+      >
+        <ArrowDown
+          size={18}
+          strokeWidth={1.7}
+          className="
+            relative
+
+            animate-bounce
+
+            motion-reduce:animate-none
+          "
+          style={{
+            animationDuration: "1.8s",
+          }}
+        />
+      </span>
+
+      <span
+        className="
+          absolute
+          left-1/2
+          top-full
+
+          mt-3
+
+          -translate-x-1/2
+
+          whitespace-nowrap
+
+          text-[7px]
+          font-medium
+          uppercase
+          tracking-[0.26em]
+          text-timscare-brown/50
+
+          transition-colors
+          duration-300
+
+          group-hover:text-timscare-terracotta
+
+          sm:text-[8px]
+
+          lg:mt-4
+          lg:text-[9px]
+        "
+      >
+        Découvrir
+      </span>
     </>
   );
 }
