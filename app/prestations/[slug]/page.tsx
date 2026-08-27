@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Sparkles,
+} from "lucide-react";
 import { notFound } from "next/navigation";
 
+import { BackToTopButton } from "@/components/presentation/back-to-top-button";
 import { SiteHeader } from "@/components/site-header";
 import {
   getServiceBySlug,
@@ -50,158 +55,319 @@ export default async function ServicePage({
     notFound();
   }
 
+  const categoryServices = services.filter(
+    (item) =>
+      item.categoryId === service.categoryId,
+  );
+
+  const serviceIndex =
+    categoryServices.findIndex(
+      (item) => item.slug === service.slug,
+    ) + 1;
+
+  const serviceNumber = String(
+    serviceIndex,
+  ).padStart(2, "0");
+
   return (
     <>
       <SiteHeader />
 
       <main className="overflow-x-clip bg-timscare-cream">
         {/* =====================================================
-            HERO DU SOIN
+            HERO
+            Toujours entièrement visible au chargement
             ===================================================== */}
 
         <section
+          id="hero"
           className="
-            relative flex min-h-[100dvh]
-            items-center overflow-hidden
+            relative
+            h-[100dvh]
+            overflow-hidden
             bg-timscare-cream
-            px-5 pb-10 pt-24
-
-            sm:px-6
-
-            md:px-8 md:pb-12
-
-            lg:pt-28
           "
         >
-          {/* DÉCORS */}
+          {/* GRAND NUMÉRO DÉCORATIF */}
+
+          <span
+            className="
+              pointer-events-none
+              absolute
+              -right-[8%]
+              top-[13%]
+
+              text-[9rem]
+              font-medium
+              leading-none
+              tracking-[-0.1em]
+
+              text-timscare-brown/[0.025]
+
+              sm:text-[13rem]
+
+              lg:right-[2%]
+              lg:top-[8%]
+              lg:text-[21rem]
+            "
+          >
+            {serviceNumber}
+          </span>
+
+          {/* CERCLE DÉCORATIF */}
+
           <div
             className="
-              pointer-events-none absolute
-              -right-[45%] -top-[15%]
-              aspect-square w-[100%]
+              pointer-events-none
+              absolute
+
+              -left-[48%]
+              bottom-[-30%]
+
+              aspect-square
+              w-[95%]
+
               rounded-full
-              bg-timscare-beige/45
 
-              sm:-right-[30%] sm:w-[75%]
+              border
+              border-timscare-brown/[0.04]
 
-              lg:-right-[15%] lg:w-[48%]
+              sm:w-[70%]
+
+              lg:-bottom-[42%]
+              lg:-left-[16%]
+              lg:w-[42%]
             "
           />
 
-          <div
-            className="
-              pointer-events-none absolute
-              -bottom-[30%] -left-[45%]
-              aspect-square w-[90%]
-              rounded-full
-              bg-timscare-beige/25
-
-              lg:w-[48%]
-            "
-          />
+          {/* ===================================================
+              COMPOSITION HERO
+              =================================================== */}
 
           <div
             className="
-              relative mx-auto grid
-              w-full max-w-7xl
-              gap-8
+              relative
 
-              lg:grid-cols-[0.9fr_1.1fr]
+              mx-auto
+
+              flex
+              h-full
+              w-full
+              max-w-7xl
+
+              flex-col
+
+              px-5
+              pb-5
+              pt-24
+
+              sm:px-6
+              sm:pb-6
+              sm:pt-28
+
+              md:px-8
+              md:pb-8
+
+              lg:grid
+              lg:grid-cols-[0.88fr_1.12fr]
               lg:items-center
-              lg:gap-14
+              lg:gap-16
+              lg:pt-28
             "
           >
             {/* =================================================
-                CONTENU
+                TEXTE
                 ================================================= */}
 
-            <div className="relative z-10">
+            <div
+              className="
+                relative
+                z-20
+                shrink-0
+
+                lg:pr-4
+              "
+            >
+              {/* RETOUR */}
+
               <Link
                 href={`/prestations/${service.categoryId}`}
                 className="
-                  inline-flex items-center gap-2
-                  text-[11px] font-medium
-                  text-timscare-brown/60
-                  transition
+                  inline-flex
+                  items-center
+                  gap-2
+
+                  text-[9px]
+                  font-medium
+                  uppercase
+                  tracking-[0.18em]
+
+                  text-timscare-brown/45
+
+                  transition-colors
+
                   hover:text-timscare-terracotta
+
+                  sm:text-[10px]
                 "
               >
                 <ArrowLeft
-                  size={14}
+                  size={13}
                   strokeWidth={1.5}
                 />
 
                 Retour à {service.categoryTitle}
               </Link>
 
-              <p
-                className="
-                  mt-8
-                  text-[10px] font-medium
-                  uppercase tracking-[0.32em]
-                  text-timscare-terracotta
+              {/* LABEL */}
 
-                  sm:text-xs
+              <div
+                className="
+                  mt-5
+
+                  flex
+                  items-center
+                  gap-3
+
+                  sm:mt-6
                 "
               >
-                {service.categoryTitle}
-              </p>
+                <span
+                  className="
+                    flex
+                    h-8
+                    w-8
+
+                    shrink-0
+
+                    items-center
+                    justify-center
+
+                    rounded-full
+
+                    bg-timscare-terracotta
+
+                    text-timscare-cream
+                  "
+                >
+                  <Sparkles
+                    size={12}
+                    strokeWidth={1.5}
+                  />
+                </span>
+
+                <div>
+                  <p
+                    className="
+                      text-[8px]
+                      font-medium
+                      uppercase
+                      tracking-[0.28em]
+
+                      text-timscare-terracotta
+
+                      sm:text-[9px]
+                    "
+                  >
+                    {service.categoryTitle} · Soin{" "}
+                    {serviceNumber}
+                  </p>
+
+                  <div
+                    className="
+                      mt-2
+                      h-px
+                      w-9
+
+                      bg-timscare-terracotta/35
+                    "
+                  />
+                </div>
+              </div>
+
+              {/* TITRE */}
 
               <h1
                 className="
-                  mt-4 max-w-2xl
-                  text-[clamp(2.6rem,12vw,4.2rem)]
+                  mt-4
+
+                  max-w-[22rem]
+
+                  text-[clamp(2.5rem,11vw,3.9rem)]
+
                   font-medium
-                  leading-[0.98]
-                  tracking-tight
+
+                  leading-[0.9]
+
+                  tracking-[-0.055em]
+
                   text-timscare-brown
 
-                  lg:text-[clamp(3.5rem,5vw,5.2rem)]
+                  sm:mt-5
+                  sm:max-w-xl
+                  sm:text-[clamp(3.4rem,8vw,5rem)]
+
+                  lg:max-w-2xl
+                  lg:text-[clamp(4.3rem,5.7vw,6.4rem)]
+                  lg:leading-[0.9]
                 "
               >
                 {service.name}
               </h1>
 
+              {/* DESCRIPTION COURTE */}
+
               <p
                 className="
-                  mt-5 max-w-xl
-                  text-sm leading-6
-                  text-timscare-brown/65
+                  mt-4
+                  max-w-lg
 
-                  sm:text-base sm:leading-7
+                  text-[12px]
+                  leading-5
 
-                  lg:text-lg lg:leading-8
+                  text-timscare-brown/55
+
+                  sm:mt-5
+                  sm:text-sm
+                  sm:leading-6
+
+                  lg:text-base
+                  lg:leading-7
                 "
               >
-                {service.longDescription ??
-                  service.description}
+                {service.description}
               </p>
 
-              {/* MÉTADONNÉES */}
+              {/* TARIF / DURÉE */}
+
               <div
                 className="
-                  mt-7 grid max-w-xl
-                  grid-cols-2 gap-2
+                  mt-5
 
-                  sm:gap-3
+                  flex
+                  max-w-lg
+                  items-center
+
+                  gap-6
+
+                  border-t
+                  border-timscare-brown/10
+
+                  pt-4
+
+                  sm:mt-6
+                  sm:gap-8
+                  sm:pt-5
                 "
               >
-                {/* PRIX */}
-                <div
-                  className="
-                    rounded-[1.4rem]
-                    border border-timscare-brown/10
-                    bg-[#fffaf5]
-                    p-4
-
-                    sm:p-5
-                  "
-                >
+                <div>
                   <p
                     className="
-                      text-[9px] uppercase
-                      tracking-[0.25em]
-                      text-timscare-brown/45
+                      text-[7px]
+                      uppercase
+                      tracking-[0.24em]
+
+                      text-timscare-brown/35
                     "
                   >
                     Tarif
@@ -209,8 +375,14 @@ export default async function ServicePage({
 
                   <p
                     className="
-                      mt-2 text-xl
+                      mt-1
+
+                      text-xl
+
                       font-medium
+
+                      tracking-[-0.04em]
+
                       text-timscare-brown
 
                       sm:text-2xl
@@ -220,421 +392,917 @@ export default async function ServicePage({
                   </p>
                 </div>
 
-                {/* CATÉGORIE */}
-                <div
-                  className="
-                    rounded-[1.4rem]
-                    border border-timscare-brown/10
-                    bg-[#fffaf5]
-                    p-4
-
-                    sm:p-5
-                  "
-                >
-                  <p
-                    className="
-                      text-[9px] uppercase
-                      tracking-[0.25em]
-                      text-timscare-brown/45
-                    "
-                  >
-                    Catégorie
-                  </p>
-
-                  <p
-                    className="
-                      mt-2 text-sm
-                      font-medium
-                      leading-tight
-                      text-timscare-brown
-
-                      sm:text-base
-                    "
-                  >
-                    {service.categoryTitle}
-                  </p>
-                </div>
-
-                {/* DURÉE — apparaît uniquement quand elle existe */}
                 {service.duration && (
                   <div
                     className="
-                      col-span-2
-                      rounded-[1.4rem]
-                      border border-timscare-brown/10
-                      bg-[#fffaf5]
-                      p-4
+                      border-l
+                      border-timscare-brown/10
 
-                      sm:p-5
+                      pl-6
+
+                      sm:pl-8
                     "
                   >
                     <p
                       className="
-                        text-[9px] uppercase
-                        tracking-[0.25em]
-                        text-timscare-brown/45
+                        text-[7px]
+                        uppercase
+                        tracking-[0.24em]
+
+                        text-timscare-brown/35
                       "
                     >
                       Durée
                     </p>
 
-                    <p className="mt-2 font-medium text-timscare-brown">
+                    <p
+                      className="
+                        mt-1
+
+                        text-sm
+
+                        font-medium
+
+                        text-timscare-brown
+
+                        sm:text-base
+                      "
+                    >
                       {service.duration}
                     </p>
                   </div>
                 )}
               </div>
-
-              {/* CTA */}
-              <button
-                type="button"
-                className="
-                  mt-6 inline-flex
-                  min-h-14 items-center
-                  justify-center gap-3
-                  rounded-full
-                  bg-timscare-terracotta
-                  px-7
-                  text-sm font-medium
-                  text-timscare-cream
-                  shadow-[0_12px_35px_rgba(175,86,30,0.18)]
-                  transition
-
-                  hover:-translate-y-0.5
-                  hover:opacity-90
-                "
-              >
-                Réserver ce soin
-
-                <ArrowRight
-                  size={16}
-                  strokeWidth={1.6}
-                />
-              </button>
             </div>
 
             {/* =================================================
-                IMAGE PRINCIPALE
+                IMAGE
+
+                Sur smartphone :
+                elle prend uniquement l'espace restant.
+                Elle ne peut donc pas allonger le Hero.
                 ================================================= */}
 
             <div
               className="
-                relative z-10
-                mx-auto
-                h-[34dvh]
-                min-h-[240px]
-                w-full
-                max-w-[620px]
-                overflow-hidden
-                rounded-[2rem]
+                relative
+                z-10
 
-                sm:h-[40dvh]
-                sm:min-h-[300px]
+                mt-5
 
-                lg:h-[min(68dvh,650px)]
-                lg:min-h-[520px]
-                lg:rounded-[2.75rem]
+                min-h-0
+                flex-1
+
+                sm:mt-6
+
+                lg:mt-0
+                lg:h-[min(69dvh,680px)]
+                lg:min-h-[430px]
+                lg:flex-none
               "
             >
-              {service.image ? (
-                <Image
-                  src={service.image}
-                  alt={service.name}
-                  fill
-                  priority
-                  sizes="
-                    (max-width: 1024px) 100vw,
-                    55vw
-                  "
-                  className="object-cover"
-                />
-              ) : (
-                /* PLACEHOLDER EN ATTENDANT LES PHOTOS */
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background: `
-                      radial-gradient(
-                        circle at 68% 30%,
-                        #fffaf5 0%,
-                        #f2d7b8 28%,
-                        rgba(175,86,30,0.82) 62%,
-                        #482412 100%
-                      )
-                    `,
-                  }}
-                />
-              )}
-
-              {/* LUMIÈRE */}
               <div
                 className="
-                  pointer-events-none absolute
-                  right-[10%] top-[10%]
-                  h-[35%] w-[38%]
-                  rounded-full
-                  bg-white/20
-                  blur-3xl
-                "
-              />
+                  relative
 
-              {/* CONTOUR INTERNE */}
-              <div
-                className="
-                  pointer-events-none absolute
-                  inset-3 rounded-[1.5rem]
-                  border border-white/20
+                  h-full
+                  min-h-[170px]
+                  w-full
 
-                  sm:inset-4
+                  overflow-hidden
 
-                  lg:inset-5
-                  lg:rounded-[2.2rem]
-                "
-              />
+                  rounded-[1.8rem_1.8rem_3.8rem_1.8rem]
 
-              {/* NOM SUR IMAGE */}
-              <div
-                className="
-                  absolute inset-x-0 bottom-0
-                  bg-gradient-to-t
-                  from-timscare-brown/65
-                  via-timscare-brown/20
-                  to-transparent
-                  px-6 pb-6 pt-20
-                  text-timscare-cream
+                  bg-timscare-beige
 
-                  sm:px-8 sm:pb-8
+                  shadow-[0_26px_70px_rgba(72,36,18,0.12)]
+
+                  sm:min-h-[220px]
+                  sm:rounded-[2.2rem_2.2rem_5rem_2.2rem]
+
+                  lg:rounded-[2.75rem_2.75rem_7rem_2.75rem]
                 "
               >
-                <p
+                {service.image ? (
+                  <Image
+                    src={service.image}
+                    alt={service.name}
+                    fill
+                    priority
+                    sizes="
+                      (max-width: 1024px) 100vw,
+                      55vw
+                    "
+                    className="object-cover"
+                  />
+                ) : (
+                  <div
+                    className="
+                      absolute inset-0
+
+                      bg-[radial-gradient(circle_at_68%_28%,#fffaf5_0%,#f2d7b8_28%,rgba(175,86,30,.82)_62%,#482412_105%)]
+                    "
+                  />
+                )}
+
+                {/* LUMIÈRE */}
+
+                <div
                   className="
-                    text-[9px] uppercase
-                    tracking-[0.32em]
-                    text-timscare-beige/80
+                    pointer-events-none
+
+                    absolute
+
+                    right-[8%]
+                    top-[8%]
+
+                    h-[34%]
+                    w-[36%]
+
+                    rounded-full
+
+                    bg-white/20
+
+                    blur-3xl
+                  "
+                />
+
+                {/* OVERLAY */}
+
+                <div
+                  className="
+                    pointer-events-none
+
+                    absolute inset-0
+
+                    bg-gradient-to-t
+
+                    from-timscare-brown/22
+                    via-transparent
+                    to-white/5
+                  "
+                />
+
+                {/* CONTOUR INTÉRIEUR */}
+
+                <div
+                  className="
+                    pointer-events-none
+
+                    absolute inset-3
+
+                    rounded-[1.35rem_1.35rem_3.25rem_1.35rem]
+
+                    border
+                    border-white/20
+
+                    sm:inset-4
+                    sm:rounded-[1.8rem_1.8rem_4.25rem_1.8rem]
+
+                    lg:inset-5
+                    lg:rounded-[2.25rem_2.25rem_6rem_2.25rem]
+                  "
+                />
+
+                {/* PETIT LABEL */}
+
+                <div
+                  className="
+                    absolute
+
+                    bottom-4
+                    left-4
+
+                    z-10
+
+                    rounded-full
+
+                    border
+                    border-white/20
+
+                    bg-timscare-brown/30
+
+                    px-3
+                    py-2
+
+                    backdrop-blur-md
+
+                    sm:bottom-5
+                    sm:left-5
+                    sm:px-4
                   "
                 >
-                  Timscare Institut
-                </p>
+                  <p
+                    className="
+                      text-[7px]
+                      font-medium
+                      uppercase
+                      tracking-[0.26em]
 
-                <p
-                  className="
-                    mt-2 text-xl
-                    font-medium
-
-                    sm:text-2xl
-                  "
-                >
-                  {service.name}
-                </p>
+                      text-timscare-cream/80
+                    "
+                  >
+                    Timscare Institut
+                  </p>
+                </div>
               </div>
+
+              {/* LIGNE TERRACOTTA */}
+
+              <div
+                className="
+                  pointer-events-none
+
+                  absolute
+
+                  -left-3
+                  top-[16%]
+
+                  z-20
+
+                  h-[30%]
+                  w-px
+
+                  bg-timscare-terracotta/60
+
+                  sm:-left-5
+
+                  lg:-left-8
+                "
+              />
+
+              {/* POINT */}
+
+              <span
+                className="
+                  pointer-events-none
+
+                  absolute
+
+                  -left-[15px]
+                  top-[16%]
+
+                  z-20
+
+                  h-1.5
+                  w-1.5
+
+                  rounded-full
+
+                  bg-timscare-terracotta
+
+                  sm:-left-[23px]
+
+                  lg:-left-[35px]
+                "
+              />
             </div>
           </div>
         </section>
 
         {/* =====================================================
-            DÉTAILS
+            À PROPOS
+            ===================================================== */}
+
+        <section className="bg-[#fffaf5]">
+          <div
+            className="
+              mx-auto
+
+              grid
+              max-w-7xl
+              gap-10
+
+              px-5
+              py-20
+
+              sm:px-6
+
+              md:px-8
+              md:py-28
+
+              lg:grid-cols-[0.72fr_1.28fr]
+              lg:gap-24
+            "
+          >
+            <div>
+              <p
+                className="
+                  text-[9px]
+                  uppercase
+                  tracking-[0.3em]
+
+                  text-timscare-terracotta
+                "
+              >
+                À propos du soin
+              </p>
+
+              <h2
+                className="
+                  mt-4
+
+                  max-w-md
+
+                  text-4xl
+
+                  font-medium
+
+                  leading-[0.98]
+
+                  tracking-[-0.045em]
+
+                  text-timscare-brown
+
+                  sm:text-5xl
+
+                  lg:text-6xl
+                "
+              >
+                Une attention pensée pour votre peau.
+              </h2>
+            </div>
+
+            <div
+              className="
+                flex
+                items-center
+
+                border-t
+                border-timscare-brown/10
+
+                pt-8
+
+                lg:border-l
+                lg:border-t-0
+                lg:pl-14
+                lg:pt-0
+              "
+            >
+              <p
+                className="
+                  max-w-2xl
+
+                  text-lg
+                  leading-8
+
+                  text-timscare-brown/70
+
+                  sm:text-xl
+                  sm:leading-9
+                "
+              >
+                {service.longDescription ??
+                  service.description}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================
+            DÉTAILS DU SOIN
             ===================================================== */}
 
         {service.details &&
           service.details.length > 0 && (
-            <section className="bg-[#fffaf5]">
+            <section
+              className="
+                overflow-hidden
+                bg-timscare-beige
+              "
+            >
               <div
                 className="
-                  mx-auto max-w-7xl
-                  px-5 py-16
+                  mx-auto
+                  max-w-7xl
+
+                  px-5
+                  py-20
 
                   sm:px-6
 
-                  md:px-8 md:py-24
+                  md:px-8
+                  md:py-28
                 "
               >
+                {/* TITRE */}
+
+                <div className="max-w-2xl">
+                  <p
+                    className="
+                      text-[9px]
+                      uppercase
+                      tracking-[0.3em]
+
+                      text-timscare-terracotta
+                    "
+                  >
+                    Le soin
+                  </p>
+
+                  <h2
+                    className="
+                      mt-4
+
+                      text-4xl
+
+                      font-medium
+
+                      leading-[1]
+
+                      tracking-[-0.045em]
+
+                      text-timscare-brown
+
+                      sm:text-5xl
+                    "
+                  >
+                    Ce soin comprend.
+                  </h2>
+                </div>
+
+                {/* LISTE */}
+
                 <div
                   className="
-                    grid gap-10
+                    mt-14
+                    space-y-3
 
-                    lg:grid-cols-[0.8fr_1.2fr]
-                    lg:gap-20
+                    sm:mt-16
+
+                    lg:mt-20
+                    lg:space-y-5
                   "
                 >
-                  <div>
-                    <p
-                      className="
-                        text-[10px] uppercase
-                        tracking-[0.3em]
-                        text-timscare-terracotta
-                      "
-                    >
-                      Le soin
-                    </p>
+                  {service.details.map(
+                    (detail, index) => {
+                      const number = String(
+                        index + 1,
+                      ).padStart(2, "0");
 
-                    <h2
-                      className="
-                        mt-4 max-w-lg
-                        text-3xl font-medium
-                        leading-[1.04]
-                        tracking-tight
-                        text-timscare-brown
+                      const alignRight =
+                        index % 2 === 1;
 
-                        sm:text-4xl
-
-                        md:text-5xl
-                      "
-                    >
-                      Ce soin en quelques mots.
-                    </h2>
-                  </div>
-
-                  <div className="grid gap-2">
-                    {service.details.map(
-                      (detail, index) => (
+                      return (
                         <div
-                          key={detail}
-                          className="
-                            flex items-center
-                            justify-between gap-5
-                            rounded-[1.25rem]
-                            border border-timscare-brown/10
-                            bg-timscare-cream
-                            px-5 py-4
+                          key={`${detail}-${index}`}
+                          className={`
+                            relative
 
-                            sm:px-6 sm:py-5
-                          "
+                            overflow-hidden
+
+                            border-b
+                            border-timscare-brown/10
+
+                            py-7
+
+                            sm:py-9
+
+                            lg:min-h-[150px]
+
+                            ${
+                              alignRight
+                                ? "lg:ml-[22%]"
+                                : "lg:mr-[22%]"
+                            }
+                          `}
                         >
-                          <div className="flex items-center gap-4">
-                            <span
-                              className="
-                                text-[9px]
-                                tracking-[0.25em]
-                                text-timscare-terracotta
-                              "
-                            >
-                              {String(index + 1).padStart(
-                                2,
-                                "0",
-                              )}
-                            </span>
+                          {/* GRAND NUMÉRO */}
 
-                            <p
-                              className="
-                                text-sm font-medium
-                                text-timscare-brown
+                          <span
+                            className="
+                              pointer-events-none
 
-                                sm:text-base
-                              "
-                            >
-                              {detail}
-                            </p>
-                          </div>
+                              absolute
+
+                              -bottom-5
+                              left-0
+
+                              text-[6rem]
+
+                              font-medium
+
+                              leading-none
+
+                              tracking-[-0.08em]
+
+                              text-timscare-brown/[0.035]
+
+                              sm:text-[8rem]
+
+                              lg:text-[10rem]
+                            "
+                          >
+                            {number}
+                          </span>
+
+                          {/* CONTENU */}
 
                           <div
                             className="
-                              h-2 w-2 shrink-0
-                              rounded-full
-                              bg-timscare-terracotta
+                              relative
+                              z-10
+
+                              flex
+
+                              items-start
+                              gap-5
                             "
-                          />
+                          >
+                            <span
+                              className="
+                                mt-1
+
+                                shrink-0
+
+                                text-[9px]
+                                font-medium
+
+                                tracking-[0.25em]
+
+                                text-timscare-terracotta
+                              "
+                            >
+                              {number}
+                            </span>
+
+                            <div className="flex-1">
+                              <p
+                                className="
+                                  max-w-xl
+
+                                  text-xl
+
+                                  font-medium
+
+                                  leading-tight
+
+                                  tracking-[-0.03em]
+
+                                  text-timscare-brown
+
+                                  sm:text-2xl
+
+                                  lg:text-3xl
+                                "
+                              >
+                                {detail}
+                              </p>
+
+                              <div
+                                className="
+                                  mt-5
+
+                                  h-px
+                                  w-12
+
+                                  bg-timscare-terracotta/50
+                                "
+                              />
+                            </div>
+                          </div>
                         </div>
-                      ),
-                    )}
-                  </div>
+                      );
+                    },
+                  )}
                 </div>
               </div>
             </section>
           )}
 
         {/* =====================================================
-            CTA FINAL
+            RESPIRATION TIMSCARE
             ===================================================== */}
 
         <section
           className="
-            relative overflow-hidden
+            relative
+
+            overflow-hidden
+
             bg-timscare-brown
+
             text-timscare-cream
           "
         >
           <div
             className="
-              pointer-events-none absolute
-              -right-[35%] -top-[80%]
-              aspect-square w-[90%]
+              pointer-events-none
+
+              absolute
+
+              -right-[45%]
+              top-1/2
+
+              aspect-square
+              w-[95%]
+
+              -translate-y-1/2
+
               rounded-full
-              border border-timscare-cream/10
 
-              sm:w-[60%]
+              border
+              border-timscare-beige/10
 
-              lg:w-[40%]
+              sm:w-[65%]
+
+              lg:-right-[15%]
+              lg:w-[42%]
             "
           />
 
           <div
             className="
-              relative mx-auto
-              flex max-w-7xl
-              flex-col gap-8
-              px-5 py-16
+              relative
+
+              mx-auto
+              max-w-7xl
+
+              px-5
+              py-20
 
               sm:px-6
 
-              md:px-8 md:py-20
-
-              lg:flex-row
-              lg:items-end
-              lg:justify-between
+              md:px-8
+              md:py-28
             "
           >
-            <div>
-              <p
-                className="
-                  text-[10px] uppercase
-                  tracking-[0.3em]
-                  text-timscare-beige/60
-                "
-              >
-                Votre moment
-              </p>
-
-              <h2
-                className="
-                  mt-4 max-w-2xl
-                  text-3xl font-medium
-                  leading-[1.03]
-                  tracking-tight
-
-                  sm:text-4xl
-
-                  md:text-5xl
-                "
-              >
-                Envie de découvrir ce soin ?
-              </h2>
-            </div>
-
-            <button
-              type="button"
+            <p
               className="
-                inline-flex min-h-14
-                shrink-0 items-center
-                justify-center gap-3
-                rounded-full
-                bg-timscare-terracotta
-                px-7
-                text-sm font-medium
-                text-timscare-cream
-                transition
-                hover:opacity-90
+                text-[9px]
+                uppercase
+                tracking-[0.35em]
+
+                text-timscare-beige/50
               "
             >
-              Réserver ce soin
+              Timscare
+            </p>
 
-              <ArrowRight
-                size={16}
-                strokeWidth={1.6}
-              />
-            </button>
+            <p
+              className="
+                mt-7
+
+                max-w-4xl
+
+                text-[clamp(2.5rem,11vw,4rem)]
+
+                font-medium
+
+                leading-[0.98]
+
+                tracking-[-0.05em]
+
+                sm:text-5xl
+
+                lg:text-6xl
+              "
+            >
+              Prendre le temps.
+              <br />
+
+              Écouter votre peau.
+              <br />
+
+              <span className="text-timscare-beige/45">
+                Révéler son éclat.
+              </span>
+            </p>
+          </div>
+        </section>
+
+        {/* =====================================================
+            CTA FINAL
+            UN SEUL BOUTON RENDEZ-VOUS
+            ===================================================== */}
+
+        <section className="bg-[#fffaf5]">
+          <div
+            className="
+              mx-auto
+              max-w-7xl
+
+              px-5
+              py-20
+
+              sm:px-6
+
+              md:px-8
+              md:py-28
+            "
+          >
+            <div
+              className="
+                relative
+
+                overflow-hidden
+
+                rounded-[2rem]
+
+                border
+                border-timscare-brown/10
+
+                bg-timscare-cream
+
+                p-7
+
+                sm:p-10
+
+                md:rounded-[2.75rem]
+                md:p-12
+
+                lg:grid
+                lg:grid-cols-[1fr_auto]
+                lg:items-end
+                lg:gap-14
+                lg:p-14
+              "
+            >
+              {/* NUMÉRO */}
+
+              <span
+                className="
+                  pointer-events-none
+
+                  absolute
+
+                  -right-3
+                  -top-8
+
+                  text-[9rem]
+
+                  font-medium
+
+                  leading-none
+
+                  tracking-[-0.08em]
+
+                  text-timscare-brown/[0.025]
+
+                  sm:text-[12rem]
+                "
+              >
+                {serviceNumber}
+              </span>
+
+              {/* CONTENU */}
+
+              <div
+                className="
+                  relative
+                  z-10
+                "
+              >
+                <p
+                  className="
+                    text-[9px]
+                    uppercase
+                    tracking-[0.3em]
+
+                    text-timscare-terracotta
+                  "
+                >
+                  Votre moment
+                </p>
+
+                <h2
+                  className="
+                    mt-4
+
+                    max-w-2xl
+
+                    text-4xl
+
+                    font-medium
+
+                    leading-[0.98]
+
+                    tracking-[-0.05em]
+
+                    text-timscare-brown
+
+                    sm:text-5xl
+
+                    lg:text-6xl
+                  "
+                >
+                  {service.name}
+                </h2>
+
+                <div
+                  className="
+                    mt-8
+
+                    flex
+                    items-end
+                    gap-3
+                  "
+                >
+                  <span
+                    className="
+                      text-[9px]
+                      uppercase
+                      tracking-[0.25em]
+
+                      text-timscare-brown/35
+                    "
+                  >
+                    Tarif
+                  </span>
+
+                  <span
+                    className="
+                      text-2xl
+
+                      font-medium
+
+                      leading-none
+
+                      tracking-[-0.04em]
+
+                      text-timscare-brown
+
+                      sm:text-3xl
+                    "
+                  >
+                    {service.price}
+                  </span>
+                </div>
+              </div>
+
+              {/* =================================================
+                  UNIQUE CTA
+                  ================================================= */}
+
+              <div
+                className="
+                  relative
+                  z-10
+
+                  mt-10
+
+                  lg:mt-0
+                "
+              >
+                <button
+                  type="button"
+                  className="
+                    group
+
+                    inline-flex
+
+                    min-h-14
+                    w-full
+
+                    items-center
+                    justify-center
+
+                    gap-4
+
+                    rounded-full
+
+                    bg-timscare-terracotta
+
+                    px-7
+
+                    text-sm
+                    font-medium
+
+                    text-timscare-cream
+
+                    shadow-[0_15px_40px_rgba(175,86,30,0.18)]
+
+                    transition-all
+                    duration-300
+
+                    hover:-translate-y-1
+
+                    hover:shadow-[0_20px_50px_rgba(175,86,30,0.25)]
+
+                    sm:w-auto
+                    sm:min-w-[230px]
+                  "
+                >
+                  Prendre rendez-vous
+
+                  <ArrowRight
+                    size={16}
+                    strokeWidth={1.6}
+                    className="
+                      transition-transform
+                      duration-300
+
+                      group-hover:translate-x-1
+                    "
+                  />
+                </button>
+              </div>
+            </div>
           </div>
         </section>
       </main>
+
+      <BackToTopButton />
     </>
   );
 }
