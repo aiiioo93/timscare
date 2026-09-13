@@ -11,6 +11,8 @@ import {
 
 import { BackToTopButton } from "@/components/presentation/back-to-top-button";
 import { SiteHeader } from "@/components/site-header";
+import { TimscareEditorialGallery } from "@/components/timscare/editorial-gallery";
+import { timscareVisuals } from "@/data/timscare-visuals";
 
 export const metadata: Metadata = {
   title: "Timscare",
@@ -44,18 +46,9 @@ const values = [
 
 /* =========================================================
    PHOTO DU HERO
-
-   Plus tard :
-
-   public/timscare/hero-timscare.webp
-
-   puis :
-
-   const heroImage =
-     "/timscare/hero-timscare.webp";
    ========================================================= */
 
-const heroImage = "";
+const heroImage = timscareVisuals.timscare.hero;
 
 /* =========================================================
    CONTOUR ORGANIQUE
@@ -303,8 +296,11 @@ export default function TimscarePage() {
             <div
               className="
                 pointer-events-none
-                absolute -inset-5
+                absolute
+                -inset-5
+
                 rounded-full
+
                 border
                 border-timscare-brown/[0.045]
 
@@ -317,8 +313,11 @@ export default function TimscarePage() {
             <div
               className="
                 pointer-events-none
-                absolute -inset-10
+                absolute
+                -inset-10
+
                 rounded-full
+
                 border
                 border-timscare-brown/[0.02]
 
@@ -335,7 +334,8 @@ export default function TimscarePage() {
             <div
               className="
                 relative
-                h-full w-full
+                h-full
+                w-full
 
                 overflow-hidden
                 rounded-full
@@ -347,57 +347,71 @@ export default function TimscarePage() {
             >
               {heroImage ? (
                 <Image
-                  src={heroImage}
-                  alt="L'univers Timscare"
+                  src={heroImage.src}
+                  alt={heroImage.alt}
                   fill
                   priority
-                  sizes="
-                    (max-width: 640px) 112vw,
-                    (max-width: 1024px) 75vw,
-                    48vw
+                  sizes="(max-width: 640px) 112vw, (max-width: 1024px) 75vw, 48vw"
+                  className="
+                    object-cover
+                    object-center
                   "
-                  className="object-cover"
                 />
               ) : (
                 <div
                   className="
-                    absolute inset-0
+                    absolute
+                    inset-0
 
                     bg-[radial-gradient(circle_at_62%_28%,#fffaf5_0%,#f2d7b8_29%,rgba(175,86,30,0.68)_67%,#482412_115%)]
                   "
                 />
               )}
 
+              {/* LUMIÈRE */}
+
               <div
                 className="
                   pointer-events-none
                   absolute
-                  right-[8%] top-[9%]
 
-                  h-[38%] w-[38%]
+                  right-[8%]
+                  top-[9%]
+
+                  h-[38%]
+                  w-[38%]
 
                   rounded-full
+
                   bg-white/25
+
                   blur-3xl
                 "
               />
 
+              {/* VOILE */}
+
               <div
                 className="
                   pointer-events-none
-                  absolute inset-0
+                  absolute
+                  inset-0
 
                   bg-gradient-to-br
+
                   from-white/10
                   via-transparent
                   to-timscare-brown/15
                 "
               />
 
+              {/* CONTOUR */}
+
               <div
                 className="
                   pointer-events-none
-                  absolute inset-3
+                  absolute
+                  inset-3
 
                   rounded-full
 
@@ -517,7 +531,8 @@ export default function TimscarePage() {
           <div
             className="
               pointer-events-none
-              absolute inset-0
+              absolute
+              inset-0
               z-20
 
               mx-auto
@@ -559,17 +574,28 @@ export default function TimscarePage() {
                 lg:w-[58%]
               "
             >
-              <div className="flex items-center gap-3">
+              <div
+                className="
+                  flex
+                  items-center
+                  gap-3
+                "
+              >
                 <span
                   className="
-                    flex h-9 w-9
+                    flex
+                    h-9
+                    w-9
+
                     shrink-0
+
                     items-center
                     justify-center
 
                     rounded-full
 
                     bg-timscare-terracotta
+
                     text-timscare-cream
                   "
                 >
@@ -583,10 +609,16 @@ export default function TimscarePage() {
                   <p
                     className="
                       text-[8px]
+
                       font-medium
+
                       uppercase
+
                       tracking-[0.28em]
+
                       text-timscare-terracotta
+
+                      drop-shadow-[0_1px_8px_rgba(254,247,239,0.9)]
 
                       sm:text-[9px]
 
@@ -599,15 +631,19 @@ export default function TimscarePage() {
                   <div
                     className="
                       mt-2
+
                       h-px
                       w-10
-                      bg-timscare-terracotta/35
+
+                      bg-timscare-terracotta/50
 
                       lg:hidden
                     "
                   />
                 </div>
               </div>
+
+              {/* GRAND TITRE */}
 
               <h1
                 className="
@@ -623,7 +659,7 @@ export default function TimscarePage() {
 
                   tracking-[-0.055em]
 
-                  text-timscare-brown
+                  text-[#32180c]
 
                   sm:max-w-xl
                   sm:text-[clamp(3.4rem,10vw,4.8rem)]
@@ -635,6 +671,10 @@ export default function TimscarePage() {
                   lg:text-[clamp(4.8rem,6.5vw,6.7rem)]
                   lg:leading-[0.92]
                 "
+                style={{
+                  textShadow:
+                    "0 1px 2px rgba(254,247,239,0.98), 0 0 12px rgba(254,247,239,0.95), 0 0 26px rgba(254,247,239,0.82), 0 0 45px rgba(254,247,239,0.60)",
+                }}
               >
                 Prendre soin
                 <br />
@@ -659,10 +699,18 @@ export default function TimscarePage() {
                 w-[69%]
                 max-w-[315px]
 
-                border-l
-                border-timscare-terracotta/25
+                rounded-[1rem]
 
-                pl-4
+                border
+                border-white/25
+
+                bg-[#fffaf5]/75
+
+                p-4
+
+                shadow-[0_14px_40px_rgba(72,36,18,0.08)]
+
+                backdrop-blur-md
 
                 sm:left-6
                 sm:top-[49%]
@@ -679,25 +727,31 @@ export default function TimscarePage() {
                 lg:w-[34%]
                 lg:max-w-none
 
-                lg:border-l-0
-                lg:pl-0
+                lg:rounded-[1.4rem]
+
+                lg:bg-[#fffaf5]/82
+
+                lg:p-5
               "
             >
               <div
                 className="
                   mb-3
+
                   flex
                   items-center
                   gap-2
-
-                  lg:hidden
                 "
               >
                 <span
                   className="
                     h-1.5
                     w-1.5
+
+                    shrink-0
+
                     rounded-full
+
                     bg-timscare-terracotta
                   "
                 />
@@ -705,10 +759,14 @@ export default function TimscarePage() {
                 <span
                   className="
                     text-[8px]
+
                     font-medium
+
                     uppercase
+
                     tracking-[0.26em]
-                    text-timscare-brown/35
+
+                    text-[#32180c]/60
                   "
                 >
                   Peau · bien-être
@@ -718,14 +776,16 @@ export default function TimscarePage() {
               <p
                 className="
                   text-[13px]
+
                   leading-[1.65]
-                  text-timscare-brown/60
+
+                  text-[#32180c]
 
                   sm:text-base
                   sm:leading-7
 
-                  lg:text-lg
-                  lg:leading-8
+                  lg:text-base
+                  lg:leading-7
                 "
               >
                 Timscare est un univers dédié au soin
@@ -737,6 +797,8 @@ export default function TimscarePage() {
             </div>
           </div>
         </section>
+
+        <TimscareEditorialGallery />
 
         {/* =====================================================
             PHILOSOPHIE
@@ -769,8 +831,11 @@ export default function TimscarePage() {
               <p
                 className="
                   text-[10px]
+
                   uppercase
+
                   tracking-[0.32em]
+
                   text-timscare-terracotta
 
                   sm:text-xs
@@ -782,12 +847,17 @@ export default function TimscarePage() {
               <h2
                 className="
                   mt-5
+
                   max-w-lg
 
                   text-4xl
+
                   font-medium
+
                   leading-[1.02]
+
                   tracking-tight
+
                   text-timscare-brown
 
                   sm:text-5xl
@@ -822,6 +892,7 @@ export default function TimscarePage() {
 
                   text-lg
                   leading-8
+
                   text-timscare-brown/75
 
                   md:text-xl
@@ -842,6 +913,7 @@ export default function TimscarePage() {
 
                   text-sm
                   leading-7
+
                   text-timscare-brown/55
 
                   sm:text-base
@@ -888,8 +960,11 @@ export default function TimscarePage() {
                 <p
                   className="
                     text-[10px]
+
                     uppercase
+
                     tracking-[0.32em]
+
                     text-timscare-terracotta
 
                     sm:text-xs
@@ -903,9 +978,13 @@ export default function TimscarePage() {
                     mt-5
 
                     text-4xl
+
                     font-medium
+
                     leading-[1.02]
+
                     tracking-tight
+
                     text-timscare-brown
 
                     sm:text-5xl
@@ -921,6 +1000,7 @@ export default function TimscarePage() {
 
                   text-sm
                   leading-7
+
                   text-timscare-brown/60
 
                   sm:text-base
@@ -933,6 +1013,8 @@ export default function TimscarePage() {
                 vient s’accorder.
               </p>
             </div>
+
+            {/* VALEURS */}
 
             <div
               className="
@@ -974,11 +1056,19 @@ export default function TimscarePage() {
                       lg:p-8
                     "
                   >
-                    <div className="flex items-center justify-between">
+                    <div
+                      className="
+                        flex
+                        items-center
+                        justify-between
+                      "
+                    >
                       <span
                         className="
                           text-[10px]
+
                           tracking-[0.3em]
+
                           text-timscare-terracotta
                         "
                       >
@@ -1012,8 +1102,11 @@ export default function TimscarePage() {
                       <h3
                         className="
                           text-2xl
+
                           font-medium
+
                           tracking-tight
+
                           text-timscare-brown
 
                           sm:text-3xl
@@ -1028,6 +1121,7 @@ export default function TimscarePage() {
 
                           text-sm
                           leading-6
+
                           text-timscare-brown/60
                         "
                       >
@@ -1107,8 +1201,11 @@ export default function TimscarePage() {
               <p
                 className="
                   text-[10px]
+
                   uppercase
+
                   tracking-[0.32em]
+
                   text-timscare-beige/65
 
                   sm:text-xs
@@ -1120,11 +1217,15 @@ export default function TimscarePage() {
               <h2
                 className="
                   mt-5
+
                   max-w-3xl
 
                   text-4xl
+
                   font-medium
+
                   leading-[1.02]
+
                   tracking-tight
 
                   sm:text-5xl
@@ -1142,7 +1243,9 @@ export default function TimscarePage() {
               <p
                 className="
                   text-base
+
                   leading-7
+
                   text-timscare-beige/75
 
                   lg:text-lg
@@ -1175,6 +1278,7 @@ export default function TimscarePage() {
 
                   text-sm
                   font-medium
+
                   text-timscare-cream
 
                   transition
@@ -1258,8 +1362,11 @@ export default function TimscarePage() {
                 <p
                   className="
                     text-[10px]
+
                     uppercase
+
                     tracking-[0.32em]
+
                     text-timscare-cream/65
                   "
                 >
@@ -1272,8 +1379,11 @@ export default function TimscarePage() {
                     max-w-3xl
 
                     text-3xl
+
                     font-medium
+
                     leading-[1.03]
+
                     tracking-tight
 
                     sm:text-4xl
@@ -1291,6 +1401,7 @@ export default function TimscarePage() {
 
                     text-sm
                     leading-6
+
                     text-timscare-cream/70
 
                     sm:text-base
@@ -1306,6 +1417,7 @@ export default function TimscarePage() {
               <div
                 className="
                   relative
+
                   mt-8
 
                   flex
@@ -1334,6 +1446,7 @@ export default function TimscarePage() {
 
                     text-sm
                     font-medium
+
                     text-timscare-brown
 
                     transition
@@ -1362,6 +1475,7 @@ export default function TimscarePage() {
 
                     text-sm
                     font-medium
+
                     text-timscare-cream
 
                     transition
@@ -1392,7 +1506,8 @@ function DiscoverTarget() {
       <span
         className="
           pointer-events-none
-          absolute inset-0
+          absolute
+          inset-0
 
           rounded-full
 
@@ -1410,7 +1525,8 @@ function DiscoverTarget() {
       <span
         className="
           pointer-events-none
-          absolute -inset-3
+          absolute
+          -inset-3
 
           rounded-full
 
@@ -1429,7 +1545,8 @@ function DiscoverTarget() {
       <span
         className="
           pointer-events-none
-          absolute inset-[3px]
+          absolute
+          inset-[3px]
 
           rounded-full
 
@@ -1441,7 +1558,8 @@ function DiscoverTarget() {
       <span
         className="
           pointer-events-none
-          absolute inset-[9px]
+          absolute
+          inset-[9px]
 
           rounded-full
 
@@ -1460,7 +1578,8 @@ function DiscoverTarget() {
       <span
         className="
           pointer-events-none
-          absolute inset-[20px]
+          absolute
+          inset-[20px]
 
           rounded-full
 
@@ -1482,6 +1601,7 @@ function DiscoverTarget() {
         className="
           pointer-events-none
           absolute
+
           left-1/2
           top-[-3px]
 
@@ -1500,6 +1620,7 @@ function DiscoverTarget() {
         className="
           pointer-events-none
           absolute
+
           bottom-[-3px]
           left-1/2
 
@@ -1518,6 +1639,7 @@ function DiscoverTarget() {
         className="
           pointer-events-none
           absolute
+
           left-[-3px]
           top-1/2
 
@@ -1536,6 +1658,7 @@ function DiscoverTarget() {
         className="
           pointer-events-none
           absolute
+
           right-[-3px]
           top-1/2
 
@@ -1552,7 +1675,8 @@ function DiscoverTarget() {
 
       <span
         className="
-          relative z-10
+          relative
+          z-10
 
           flex
           h-11
@@ -1603,6 +1727,7 @@ function DiscoverTarget() {
       <span
         className="
           absolute
+
           left-1/2
           top-full
 
@@ -1613,9 +1738,13 @@ function DiscoverTarget() {
           whitespace-nowrap
 
           text-[7px]
+
           font-medium
+
           uppercase
+
           tracking-[0.26em]
+
           text-timscare-brown/50
 
           transition-colors

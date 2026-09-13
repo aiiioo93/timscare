@@ -11,11 +11,17 @@ import {
 import { notFound } from "next/navigation";
 
 import { BackToTopButton } from "@/components/presentation/back-to-top-button";
+import { FeetGallery } from "@/components/prestations/feet-gallery";
 import { SiteHeader } from "@/components/site-header";
 import {
   categories,
   type Service,
 } from "@/data/services";
+import {
+  categoryVisuals,
+  type CategoryVisualId,
+  timscareVisuals,
+} from "@/data/timscare-visuals";
 
 /* =========================================================
    CONTOUR ORGANIQUE DU GRAND CERCLE
@@ -91,23 +97,18 @@ function TreatmentCard({
         group
         relative
         block
-
         overflow-hidden
-
         rounded-[1.8rem]
-
         border
         border-timscare-brown/10
-
         bg-[#fffaf5]
       "
     >
       <article
         className="
-          relative isolate
-
+          relative
+          isolate
           min-h-[190px]
-
           overflow-hidden
 
           sm:min-h-[220px]
@@ -120,17 +121,13 @@ function TreatmentCard({
         <span
           className="
             pointer-events-none
-
             absolute
             left-5
             top-5
-
             z-10
 
             text-[9px]
-
             tracking-[0.3em]
-
             text-timscare-terracotta
 
             sm:left-7
@@ -145,9 +142,7 @@ function TreatmentCard({
         <div
           className="
             pointer-events-none
-
             absolute
-
             -right-[8%]
             top-1/2
 
@@ -166,30 +161,14 @@ function TreatmentCard({
             maskImage: curvedMask,
           }}
         >
-          {service.image ? (
-            <Image
-              src={service.image}
-              alt={service.name}
-              fill
-              sizes="(max-width: 768px) 48vw, 40vw"
-              className="
-                object-cover
+          <div
+            className="
+              absolute
+              inset-0
 
-                transition-transform
-                duration-1000
-
-                group-hover:scale-[1.05]
-              "
-            />
-          ) : (
-            <div
-              className="
-                absolute inset-0
-
-                bg-[radial-gradient(circle_at_72%_35%,#fffaf5_0%,#f2d7b8_28%,rgba(175,86,30,.72)_62%,rgba(72,36,18,.38)_100%)]
-              "
-            />
-          )}
+              bg-[radial-gradient(circle_at_72%_35%,#fffaf5_0%,#f2d7b8_28%,rgba(175,86,30,.72)_62%,rgba(72,36,18,.38)_100%)]
+            "
+          />
         </div>
 
         {/* HALO */}
@@ -197,7 +176,6 @@ function TreatmentCard({
         <div
           className="
             pointer-events-none
-
             absolute
 
             right-[21%]
@@ -220,12 +198,11 @@ function TreatmentCard({
 
         <div
           className="
-            relative z-10
+            relative
+            z-10
 
             flex
-
             min-h-[190px]
-
             w-[74%]
 
             flex-col
@@ -252,9 +229,7 @@ function TreatmentCard({
 
               text-xl
               font-medium
-
               leading-[1.02]
-
               tracking-[-0.035em]
 
               text-timscare-brown
@@ -330,6 +305,361 @@ function TreatmentCard({
 }
 
 /* =========================================================
+   COMPOSITION PHOTO VISAGE
+   ========================================================= */
+
+function VisageAtmosphere() {
+  const images = timscareVisuals.categories.visage.gallery;
+
+  return (
+    <section
+      id="univers-visage"
+      className="
+        scroll-mt-0
+        overflow-hidden
+        bg-[#fffaf5]
+      "
+    >
+      <div
+        className="
+          mx-auto
+          max-w-7xl
+
+          px-5
+          py-20
+
+          sm:px-6
+
+          md:px-8
+          md:py-28
+        "
+      >
+        {/* INTRO */}
+
+        <div
+          className="
+            grid
+            gap-8
+
+            lg:grid-cols-[0.85fr_1.15fr]
+            lg:items-end
+            lg:gap-20
+          "
+        >
+          <div>
+            <p
+              className="
+                text-[9px]
+                font-medium
+                uppercase
+                tracking-[0.32em]
+
+                text-timscare-terracotta
+              "
+            >
+              L’expérience visage
+            </p>
+
+            <h2
+              className="
+                mt-5
+                max-w-xl
+
+                text-4xl
+                font-medium
+                leading-[0.98]
+                tracking-[-0.045em]
+
+                text-timscare-brown
+
+                sm:text-5xl
+
+                lg:text-6xl
+              "
+            >
+              Des gestes,
+              <br />
+              des textures,
+              <br />
+              un moment pour soi.
+            </h2>
+          </div>
+
+          <div className="lg:pb-2">
+            <p
+              className="
+                max-w-xl
+
+                text-sm
+                leading-7
+
+                text-timscare-brown/60
+
+                sm:text-base
+                sm:leading-8
+
+                lg:ml-auto
+              "
+            >
+              Découvrez quelques instants capturés dans
+              l’univers Timscare, entre préparation,
+              soin et moments de détente.
+            </p>
+          </div>
+        </div>
+
+        {/* =====================================================
+            GALERIE
+            ===================================================== */}
+
+        <div
+          className="
+            mt-12
+
+            grid
+            grid-cols-2
+            gap-3
+
+            sm:gap-4
+
+            lg:mt-16
+            lg:grid-cols-12
+          "
+        >
+          {/* PHOTO PRINCIPALE */}
+
+          <div
+            className="
+              relative
+
+              col-span-2
+
+              aspect-[4/5]
+
+              overflow-hidden
+
+              rounded-[2rem_2rem_5rem_2rem]
+
+              bg-timscare-beige
+
+              shadow-[0_25px_70px_rgba(72,36,18,0.10)]
+
+              sm:aspect-[5/4]
+
+              lg:col-span-7
+              lg:aspect-[5/6]
+              lg:rounded-[2.75rem_2.75rem_7rem_2.75rem]
+            "
+          >
+            <Image
+              src={images[0].src}
+              alt={images[0].alt}
+              fill
+              sizes="
+                (max-width: 1024px) 100vw,
+                58vw
+              "
+              className="
+                object-cover
+                object-center
+              "
+            />
+
+            <div
+              className="
+                pointer-events-none
+                absolute
+                inset-0
+
+                bg-gradient-to-t
+
+                from-timscare-brown/25
+                via-transparent
+                to-transparent
+              "
+            />
+
+            <div
+              className="
+                pointer-events-none
+                absolute
+                inset-4
+
+                rounded-[1.5rem_1.5rem_4.2rem_1.5rem]
+
+                border
+                border-white/25
+
+                lg:inset-5
+                lg:rounded-[2.2rem_2.2rem_6rem_2.2rem]
+              "
+            />
+
+            <div
+              className="
+                absolute
+
+                bottom-5
+                left-5
+
+                rounded-full
+
+                border
+                border-white/20
+
+                bg-timscare-brown/35
+
+                px-4
+                py-2
+
+                backdrop-blur-md
+              "
+            >
+              <span
+                className="
+                  text-[8px]
+                  uppercase
+                  tracking-[0.28em]
+
+                  text-white
+                "
+              >
+                Timscare
+              </span>
+            </div>
+          </div>
+
+          {/* PETITES PHOTOS */}
+
+          <div
+            className="
+              col-span-2
+
+              grid
+              grid-cols-2
+              gap-3
+
+              sm:gap-4
+
+              lg:col-span-5
+              lg:grid-cols-1
+            "
+          >
+            {/* PHOTO 02 */}
+
+            <div
+              className="
+                relative
+
+                aspect-[3/4]
+
+                overflow-hidden
+
+                rounded-[1.5rem_1.5rem_3.5rem_1.5rem]
+
+                bg-timscare-beige
+
+                lg:aspect-auto
+                lg:min-h-[280px]
+                lg:rounded-[2rem_2rem_4.5rem_2rem]
+              "
+            >
+              <Image
+                src={images[1].src}
+                alt={images[1].alt}
+                fill
+                sizes="
+                  (max-width: 1024px) 50vw,
+                  42vw
+                "
+                className="object-cover"
+              />
+
+              <div
+                className="
+                  pointer-events-none
+                  absolute
+                  inset-0
+
+                  bg-gradient-to-t
+
+                  from-timscare-brown/15
+                  via-transparent
+                  to-transparent
+                "
+              />
+            </div>
+
+            {/* PHOTO 07 */}
+
+            <div
+              className="
+                relative
+
+                aspect-[3/4]
+
+                overflow-hidden
+
+                rounded-[1.5rem_3.5rem_1.5rem_1.5rem]
+
+                bg-timscare-beige
+
+                lg:aspect-auto
+                lg:min-h-[280px]
+                lg:rounded-[2rem_4.5rem_2rem_2rem]
+              "
+            >
+              <Image
+                src={images[2].src}
+                alt={images[2].alt}
+                fill
+                sizes="
+                  (max-width: 1024px) 50vw,
+                  42vw
+                "
+                className="object-cover"
+              />
+
+              <div
+                className="
+                  pointer-events-none
+                  absolute
+                  inset-0
+
+                  bg-gradient-to-t
+
+                  from-timscare-brown/15
+                  via-transparent
+                  to-transparent
+                "
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:mt-4 sm:gap-4 lg:grid-cols-12">
+          {images.slice(3).map((image, index) => (
+            <figure
+              key={image.src}
+              className={`relative overflow-hidden bg-timscare-beige ${index === 0 || index === 3 ? "col-span-2 aspect-[16/10] rounded-[2rem] lg:col-span-7" : "aspect-[3/4] rounded-[1.5rem] lg:col-span-5 lg:aspect-[4/3]"}`}
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                sizes={index === 0 || index === 3 ? "(max-width: 1024px) 100vw, 58vw" : "(max-width: 1024px) 50vw, 42vw"}
+                className="object-cover object-center"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-timscare-brown/15 via-transparent to-transparent" />
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================
    PAGE CATÉGORIE
    ========================================================= */
 
@@ -364,26 +694,50 @@ export function CategoryDetailPage({
         categories.length
     ];
 
-  /*
-    On utilise automatiquement la première
-    photo disponible dans la catégorie pour
-    le grand cercle du Hero.
+  const isVisage =
+    category.id === "visage";
 
-    Plus tard, si chaque catégorie possède
-    sa propre photo Hero, on pourra ajouter
-    directement une propriété heroImage.
+  const isPieds =
+    category.id === "pieds";
+
+  /*
+    Pour Visage, on utilise une vraie photo
+    fournie par la cliente.
+
+    Pour les autres catégories, on garde
+    le fonctionnement précédent :
+    première image disponible dans les soins.
   */
 
-  const heroImage =
-    category.services.find(
-      (service) => service.image,
-    )?.image;
+  const categoryVisual =
+    category.id in categoryVisuals
+      ? categoryVisuals[
+          category.id as CategoryVisualId
+        ]
+      : undefined;
+
+  const heroImage = categoryVisual?.hero;
+
+  const hasHeroImage =
+    Boolean(heroImage);
+
+  const discoverTarget =
+    isVisage
+      ? "#univers-visage"
+      : isPieds
+        ? "#univers-pieds"
+        : "#soins";
 
   return (
     <>
       <SiteHeader />
 
-      <main className="overflow-x-clip bg-timscare-cream">
+      <main
+        className="
+          overflow-x-clip
+          bg-timscare-cream
+        "
+      >
         {/* =====================================================
             HERO
             ===================================================== */}
@@ -415,15 +769,12 @@ export function CategoryDetailPage({
               z-40
 
               inline-flex
-
               items-center
               gap-2
 
               text-[9px]
               font-medium
-
               uppercase
-
               tracking-[0.18em]
 
               text-timscare-brown/45
@@ -436,8 +787,6 @@ export function CategoryDetailPage({
 
               md:left-8
               md:top-28
-
-              lg:top-28
             "
           >
             <ArrowLeft
@@ -511,7 +860,6 @@ export function CategoryDetailPage({
 
                   <feMerge>
                     <feMergeNode in="blur" />
-
                     <feMergeNode in="SourceGraphic" />
                   </feMerge>
                 </filter>
@@ -629,7 +977,8 @@ export function CategoryDetailPage({
               className="
                 pointer-events-none
 
-                absolute -inset-5
+                absolute
+                -inset-5
 
                 rounded-full
 
@@ -646,7 +995,8 @@ export function CategoryDetailPage({
               className="
                 pointer-events-none
 
-                absolute -inset-10
+                absolute
+                -inset-10
 
                 rounded-full
 
@@ -681,21 +1031,21 @@ export function CategoryDetailPage({
             >
               {heroImage ? (
                 <Image
-                  src={heroImage}
-                  alt={category.title}
+                  src={heroImage.src}
+                  alt={heroImage.alt}
                   fill
                   priority
-                  sizes="
-                    (max-width: 640px) 112vw,
-                    (max-width: 1024px) 75vw,
-                    48vw
+                  sizes="(max-width: 640px) 112vw, (max-width: 1024px) 75vw, 48vw"
+                  className="
+                    object-cover
+                    object-center
                   "
-                  className="object-cover"
                 />
               ) : (
                 <div
                   className="
-                    absolute inset-0
+                    absolute
+                    inset-0
 
                     bg-[radial-gradient(circle_at_62%_28%,#fffaf5_0%,#f2d7b8_29%,rgba(175,86,30,0.68)_67%,#482412_115%)]
                   "
@@ -730,7 +1080,8 @@ export function CategoryDetailPage({
                 className="
                   pointer-events-none
 
-                  absolute inset-0
+                  absolute
+                  inset-0
 
                   bg-gradient-to-br
 
@@ -746,7 +1097,8 @@ export function CategoryDetailPage({
                 className="
                   pointer-events-none
 
-                  absolute inset-3
+                  absolute
+                  inset-3
 
                   rounded-full
 
@@ -765,8 +1117,8 @@ export function CategoryDetailPage({
                 ================================================= */}
 
             <a
-              href="#soins"
-              aria-label={`Découvrir les soins ${category.title}`}
+              href={discoverTarget}
+              aria-label={`Découvrir ${category.title}`}
               className="
                 group
 
@@ -798,8 +1150,8 @@ export function CategoryDetailPage({
               =================================================== */}
 
           <a
-            href="#soins"
-            aria-label={`Découvrir les soins ${category.title}`}
+            href={discoverTarget}
+            aria-label={`Découvrir ${category.title}`}
             className="
               group
 
@@ -811,7 +1163,6 @@ export function CategoryDetailPage({
               z-30
 
               flex
-
               h-[86px]
               w-[86px]
 
@@ -837,7 +1188,7 @@ export function CategoryDetailPage({
           </a>
 
           {/* ===================================================
-              GRAND NUMÉRO DÉCORATIF
+              GRAND NUMÉRO
               =================================================== */}
 
           <span
@@ -861,10 +1212,10 @@ export function CategoryDetailPage({
 
               sm:text-[13rem]
 
+              lg:bottom-auto
               lg:left-auto
               lg:right-[3%]
               lg:top-[20%]
-              lg:bottom-auto
               lg:text-[24rem]
             "
           >
@@ -879,7 +1230,8 @@ export function CategoryDetailPage({
             className="
               pointer-events-none
 
-              absolute inset-0
+              absolute
+              inset-0
 
               z-20
 
@@ -895,9 +1247,7 @@ export function CategoryDetailPage({
               md:px-8
             "
           >
-            {/* ===============================================
-                TITRE
-                =============================================== */}
+            {/* TITRE */}
 
             <div
               className="
@@ -922,7 +1272,6 @@ export function CategoryDetailPage({
                 lg:left-8
                 lg:right-auto
                 lg:top-auto
-
                 lg:w-[58%]
               "
             >
@@ -989,7 +1338,7 @@ export function CategoryDetailPage({
               </div>
 
               <h1
-                className="
+                className={`
                   mt-5
 
                   max-w-[22rem]
@@ -1002,7 +1351,11 @@ export function CategoryDetailPage({
 
                   tracking-[-0.055em]
 
-                  text-timscare-brown
+                  ${
+                    hasHeroImage
+                      ? "text-[#32180c]"
+                      : "text-timscare-brown"
+                  }
 
                   sm:max-w-xl
                   sm:text-[clamp(3.4rem,10vw,5rem)]
@@ -1013,54 +1366,107 @@ export function CategoryDetailPage({
                   lg:max-w-4xl
                   lg:text-[clamp(5rem,7vw,7rem)]
                   lg:leading-[0.92]
-                "
+                `}
+                style={
+                  hasHeroImage
+                    ? {
+                        textShadow:
+                          "0 1px 2px rgba(254,247,239,0.98), 0 0 12px rgba(254,247,239,0.95), 0 0 26px rgba(254,247,239,0.82), 0 0 45px rgba(254,247,239,0.60)",
+                      }
+                    : undefined
+                }
               >
                 {category.title}
               </h1>
             </div>
 
-            {/* ===============================================
-                DESCRIPTION
-                =============================================== */}
+            {/* DESCRIPTION */}
 
             <div
-              className="
-                pointer-events-auto
+              className={
+                hasHeroImage
+                  ? `
+                    pointer-events-auto
 
-                absolute
+                    absolute
 
-                left-5
-                top-[48%]
+                    left-5
+                    top-[48%]
 
-                w-[68%]
-                max-w-[315px]
+                    w-[68%]
+                    max-w-[315px]
 
-                border-l
+                    rounded-[1rem]
 
-                border-timscare-terracotta/25
+                    border
+                    border-white/25
 
-                pl-4
+                    bg-[#fffaf5]/75
 
-                sm:left-6
-                sm:top-[47%]
-                sm:w-[58%]
-                sm:max-w-md
+                    p-4
 
-                md:left-8
-                md:top-[47%]
+                    shadow-[0_14px_40px_rgba(72,36,18,0.08)]
 
-                lg:left-[54%]
-                lg:right-auto
-                lg:top-[53%]
+                    backdrop-blur-md
 
-                lg:w-[34%]
-                lg:max-w-none
+                    sm:left-6
+                    sm:top-[47%]
+                    sm:w-[58%]
+                    sm:max-w-md
 
-                lg:border-l-0
-                lg:pl-0
-              "
+                    md:left-8
+                    md:top-[47%]
+
+                    lg:left-[54%]
+                    lg:right-auto
+                    lg:top-[53%]
+
+                    lg:w-[34%]
+                    lg:max-w-none
+
+                    lg:rounded-[1.4rem]
+
+                    lg:bg-[#fffaf5]/82
+
+                    lg:p-5
+                  `
+                  : `
+                    pointer-events-auto
+
+                    absolute
+
+                    left-5
+                    top-[48%]
+
+                    w-[68%]
+                    max-w-[315px]
+
+                    border-l
+                    border-timscare-terracotta/25
+
+                    pl-4
+
+                    sm:left-6
+                    sm:top-[47%]
+                    sm:w-[58%]
+                    sm:max-w-md
+
+                    md:left-8
+                    md:top-[47%]
+
+                    lg:left-[54%]
+                    lg:right-auto
+                    lg:top-[53%]
+
+                    lg:w-[34%]
+                    lg:max-w-none
+
+                    lg:border-l-0
+                    lg:pl-0
+                  `
+              }
             >
-              {/* NOMBRE DE SOINS MOBILE */}
+              {/* NOMBRE DE SOINS */}
 
               <div
                 className="
@@ -1070,13 +1476,15 @@ export function CategoryDetailPage({
                   items-center
                   gap-2
 
-                  lg:hidden
+                  lg:mb-4
                 "
               >
                 <span
                   className="
                     h-1.5
                     w-1.5
+
+                    shrink-0
 
                     rounded-full
 
@@ -1085,7 +1493,7 @@ export function CategoryDetailPage({
                 />
 
                 <span
-                  className="
+                  className={`
                     text-[8px]
 
                     font-medium
@@ -1094,8 +1502,14 @@ export function CategoryDetailPage({
 
                     tracking-[0.26em]
 
-                    text-timscare-brown/35
-                  "
+                    ${
+                      hasHeroImage
+                        ? "text-[#32180c]/60"
+                        : "text-timscare-brown/40"
+                    }
+
+                    lg:text-[9px]
+                  `}
                 >
                   {String(
                     category.services.length,
@@ -1106,71 +1520,40 @@ export function CategoryDetailPage({
                 </span>
               </div>
 
-              {/* NOMBRE DE SOINS DESKTOP */}
-
-              <div
-                className="
-                  mb-4
-
-                  hidden
-
-                  items-center
-                  gap-2
-
-                  lg:flex
-                "
-              >
-                <span
-                  className="
-                    h-1.5
-                    w-1.5
-
-                    rounded-full
-
-                    bg-timscare-terracotta
-                  "
-                />
-
-                <span
-                  className="
-                    text-[9px]
-
-                    font-medium
-
-                    uppercase
-
-                    tracking-[0.25em]
-
-                    text-timscare-brown/40
-                  "
-                >
-                  {category.services.length}{" "}
-                  {category.services.length > 1
-                    ? "prestations"
-                    : "prestation"}
-                </span>
-              </div>
-
               <p
-                className="
+                className={`
                   text-[13px]
 
                   leading-[1.65]
 
-                  text-timscare-brown/60
+                  ${
+                    hasHeroImage
+                      ? "text-[#32180c]"
+                      : "text-timscare-brown/60"
+                  }
 
                   sm:text-base
                   sm:leading-7
 
                   lg:text-lg
                   lg:leading-8
-                "
+                `}
               >
                 {category.intro}
               </p>
             </div>
           </div>
         </section>
+
+        {/* =====================================================
+            PHOTOS SPÉCIALES VISAGE
+            ===================================================== */}
+
+        {isVisage && (
+          <VisageAtmosphere />
+        )}
+
+        {isPieds && <FeetGallery />}
 
         {/* =====================================================
             SOINS
@@ -1270,7 +1653,14 @@ export function CategoryDetailPage({
               </span>
             </div>
 
-            <div className="grid gap-3 sm:gap-4">
+            <div
+              className="
+                grid
+                gap-3
+
+                sm:gap-4
+              "
+            >
               {category.services.map(
                 (service, index) => (
                   <TreatmentCard
@@ -1355,7 +1745,6 @@ export function CategoryDetailPage({
                   group
 
                   flex
-
                   min-h-[140px]
 
                   flex-col
@@ -1447,7 +1836,6 @@ export function CategoryDetailPage({
                   group
 
                   flex
-
                   min-h-[140px]
 
                   flex-col
@@ -1555,7 +1943,8 @@ function DiscoverTarget() {
         className="
           pointer-events-none
 
-          absolute inset-0
+          absolute
+          inset-0
 
           rounded-full
 
@@ -1577,7 +1966,8 @@ function DiscoverTarget() {
         className="
           pointer-events-none
 
-          absolute -inset-3
+          absolute
+          -inset-3
 
           rounded-full
 
@@ -1600,7 +1990,8 @@ function DiscoverTarget() {
         className="
           pointer-events-none
 
-          absolute inset-[3px]
+          absolute
+          inset-[3px]
 
           rounded-full
 
@@ -1615,7 +2006,8 @@ function DiscoverTarget() {
         className="
           pointer-events-none
 
-          absolute inset-[9px]
+          absolute
+          inset-[9px]
 
           rounded-full
 
@@ -1638,7 +2030,8 @@ function DiscoverTarget() {
         className="
           pointer-events-none
 
-          absolute inset-[20px]
+          absolute
+          inset-[20px]
 
           rounded-full
 
@@ -1752,7 +2145,6 @@ function DiscoverTarget() {
           z-10
 
           flex
-
           h-11
           w-11
 

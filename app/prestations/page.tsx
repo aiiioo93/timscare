@@ -16,6 +16,7 @@ import {
 
 import { SiteHeader } from "@/components/site-header";
 import { categories } from "@/data/services";
+import { timscareVisuals } from "@/data/timscare-visuals";
 
 const layouts = [
   "lg:col-span-7",
@@ -39,7 +40,7 @@ const layouts = [
      "/prestations/hero-prestations.webp";
    ========================================================= */
 
-const heroImage = "";
+const heroImage = timscareVisuals.prestations.hero;
 
 /* =========================================================
    CONTOUR ONDULÉ DU GRAND CERCLE
@@ -416,15 +417,11 @@ export default function PrestationsPage() {
             >
               {heroImage ? (
                 <Image
-                  src={heroImage}
-                  alt="L'univers des soins Timscare"
+                  src={heroImage.src}
+                  alt={heroImage.alt}
                   fill
                   priority
-                  sizes="
-                    (max-width: 640px) 112vw,
-                    (max-width: 1024px) 75vw,
-                    48vw
-                  "
+                  sizes="(max-width: 640px) 112vw, (max-width: 1024px) 75vw, 48vw"
                   className="object-cover"
                 />
               ) : (
@@ -961,12 +958,6 @@ export default function PrestationsPage() {
             <div className="grid gap-3 lg:grid-cols-12 lg:gap-4">
               {categories.map(
                 (category, index) => {
-                  const firstImage =
-                    category.services.find(
-                      (service) =>
-                        service.image,
-                    )?.image;
-
                   const dark =
                     index === 0 ||
                     index === 3 ||
@@ -1004,39 +995,6 @@ export default function PrestationsPage() {
                         }
                       `}
                     >
-                      {/* PHOTO */}
-
-                      {firstImage && (
-                        <div className="absolute inset-0">
-                          <Image
-                            src={firstImage}
-                            alt=""
-                            fill
-                            sizes="(max-width: 1024px) 100vw, 60vw"
-                            className="
-                              object-cover
-
-                              transition-transform
-                              duration-1000
-
-                              group-hover:scale-[1.04]
-                            "
-                          />
-
-                          <div
-                            className={`
-                              absolute inset-0
-
-                              ${
-                                dark
-                                  ? "bg-timscare-brown/65"
-                                  : "bg-timscare-beige/65"
-                              }
-                            `}
-                          />
-                        </div>
-                      )}
-
                       {/* FORMES */}
 
                       <div

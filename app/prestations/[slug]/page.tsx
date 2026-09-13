@@ -14,6 +14,10 @@ import {
   getServiceBySlug,
   services,
 } from "@/data/services";
+import {
+  type ServiceVisualId,
+  timscareVisuals,
+} from "@/data/timscare-visuals";
 
 type ServicePageProps = {
   params: Promise<{
@@ -31,7 +35,9 @@ export async function generateMetadata({
   params,
 }: ServicePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+
+  const service =
+    getServiceBySlug(slug);
 
   if (!service) {
     return {
@@ -49,34 +55,66 @@ export default async function ServicePage({
   params,
 }: ServicePageProps) {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+
+  const service =
+    getServiceBySlug(slug);
 
   if (!service) {
     notFound();
   }
 
-  const categoryServices = services.filter(
-    (item) =>
-      item.categoryId === service.categoryId,
-  );
+  const categoryServices =
+    services.filter(
+      (item) =>
+        item.categoryId ===
+        service.categoryId,
+    );
 
   const serviceIndex =
     categoryServices.findIndex(
-      (item) => item.slug === service.slug,
+      (item) =>
+        item.slug === service.slug,
     ) + 1;
 
-  const serviceNumber = String(
-    serviceIndex,
-  ).padStart(2, "0");
+  const serviceNumber =
+    String(serviceIndex).padStart(
+      2,
+      "0",
+    );
+
+  /*
+    On ne prétend pas qu'une photo générique
+    représente un soin précis.
+
+    Si le soin possède plus tard sa propre image
+    dans data/services.ts, elle sera prioritaire.
+
+    Sinon, pour Visage uniquement, on utilise
+    une photo d'ambiance neutre.
+  */
+
+  const isVisage =
+    service.categoryId === "visage";
+
+  const heroImage =
+    service.slug in timscareVisuals.services
+      ? timscareVisuals.services[
+          service.slug as ServiceVisualId
+        ]
+      : undefined;
 
   return (
     <>
       <SiteHeader />
 
-      <main className="overflow-x-clip bg-timscare-cream">
+      <main
+        className="
+          overflow-x-clip
+          bg-timscare-cream
+        "
+      >
         {/* =====================================================
             HERO
-            Toujours entièrement visible au chargement
             ===================================================== */}
 
         <section
@@ -88,12 +126,13 @@ export default async function ServicePage({
             bg-timscare-cream
           "
         >
-          {/* GRAND NUMÉRO DÉCORATIF */}
+          {/* GRAND NUMÉRO */}
 
           <span
             className="
               pointer-events-none
               absolute
+
               -right-[8%]
               top-[13%]
 
@@ -141,7 +180,7 @@ export default async function ServicePage({
           />
 
           {/* ===================================================
-              COMPOSITION HERO
+              COMPOSITION
               =================================================== */}
 
           <div
@@ -183,6 +222,7 @@ export default async function ServicePage({
               className="
                 relative
                 z-20
+
                 shrink-0
 
                 lg:pr-4
@@ -194,12 +234,15 @@ export default async function ServicePage({
                 href={`/prestations/${service.categoryId}`}
                 className="
                   inline-flex
+
                   items-center
                   gap-2
 
                   text-[9px]
                   font-medium
+
                   uppercase
+
                   tracking-[0.18em]
 
                   text-timscare-brown/45
@@ -216,7 +259,8 @@ export default async function ServicePage({
                   strokeWidth={1.5}
                 />
 
-                Retour à {service.categoryTitle}
+                Retour à{" "}
+                {service.categoryTitle}
               </Link>
 
               {/* LABEL */}
@@ -235,6 +279,7 @@ export default async function ServicePage({
                 <span
                   className="
                     flex
+
                     h-8
                     w-8
 
@@ -260,8 +305,11 @@ export default async function ServicePage({
                   <p
                     className="
                       text-[8px]
+
                       font-medium
+
                       uppercase
+
                       tracking-[0.28em]
 
                       text-timscare-terracotta
@@ -269,13 +317,14 @@ export default async function ServicePage({
                       sm:text-[9px]
                     "
                   >
-                    {service.categoryTitle} · Soin{" "}
-                    {serviceNumber}
+                    {service.categoryTitle} ·
+                    Soin {serviceNumber}
                   </p>
 
                   <div
                     className="
                       mt-2
+
                       h-px
                       w-9
 
@@ -315,7 +364,7 @@ export default async function ServicePage({
                 {service.name}
               </h1>
 
-              {/* DESCRIPTION COURTE */}
+              {/* DESCRIPTION */}
 
               <p
                 className="
@@ -338,7 +387,7 @@ export default async function ServicePage({
                 {service.description}
               </p>
 
-              {/* TARIF / DURÉE */}
+              {/* TARIF */}
 
               <div
                 className="
@@ -364,7 +413,9 @@ export default async function ServicePage({
                   <p
                     className="
                       text-[7px]
+
                       uppercase
+
                       tracking-[0.24em]
 
                       text-timscare-brown/35
@@ -406,7 +457,9 @@ export default async function ServicePage({
                     <p
                       className="
                         text-[7px]
+
                         uppercase
+
                         tracking-[0.24em]
 
                         text-timscare-brown/35
@@ -436,11 +489,7 @@ export default async function ServicePage({
             </div>
 
             {/* =================================================
-                IMAGE
-
-                Sur smartphone :
-                elle prend uniquement l'espace restant.
-                Elle ne peut donc pas allonger le Hero.
+                IMAGE HERO
                 ================================================= */}
 
             <div
@@ -483,27 +532,45 @@ export default async function ServicePage({
                   lg:rounded-[2.75rem_2.75rem_7rem_2.75rem]
                 "
               >
-                {service.image ? (
+                {heroImage ? (
                   <Image
-                    src={service.image}
-                    alt={service.name}
+                    src={heroImage.src}
+                    alt={heroImage.alt}
                     fill
                     priority
-                    sizes="
-                      (max-width: 1024px) 100vw,
-                      55vw
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                    className="
+                      object-cover
+                      object-center
                     "
-                    className="object-cover"
                   />
                 ) : (
                   <div
                     className="
-                      absolute inset-0
+                      absolute
+                      inset-0
 
                       bg-[radial-gradient(circle_at_68%_28%,#fffaf5_0%,#f2d7b8_28%,rgba(175,86,30,.82)_62%,#482412_105%)]
                     "
                   />
                 )}
+
+                {/* VOILE */}
+
+                <div
+                  className="
+                    pointer-events-none
+
+                    absolute
+                    inset-0
+
+                    bg-gradient-to-t
+
+                    from-timscare-brown/22
+                    via-transparent
+                    to-white/5
+                  "
+                />
 
                 {/* LUMIÈRE */}
 
@@ -527,29 +594,14 @@ export default async function ServicePage({
                   "
                 />
 
-                {/* OVERLAY */}
+                {/* CONTOUR */}
 
                 <div
                   className="
                     pointer-events-none
 
-                    absolute inset-0
-
-                    bg-gradient-to-t
-
-                    from-timscare-brown/22
-                    via-transparent
-                    to-white/5
-                  "
-                />
-
-                {/* CONTOUR INTÉRIEUR */}
-
-                <div
-                  className="
-                    pointer-events-none
-
-                    absolute inset-3
+                    absolute
+                    inset-3
 
                     rounded-[1.35rem_1.35rem_3.25rem_1.35rem]
 
@@ -564,7 +616,7 @@ export default async function ServicePage({
                   "
                 />
 
-                {/* PETIT LABEL */}
+                {/* LABEL */}
 
                 <div
                   className="
@@ -580,7 +632,7 @@ export default async function ServicePage({
                     border
                     border-white/20
 
-                    bg-timscare-brown/30
+                    bg-timscare-brown/35
 
                     px-3
                     py-2
@@ -595,11 +647,14 @@ export default async function ServicePage({
                   <p
                     className="
                       text-[7px]
+
                       font-medium
+
                       uppercase
+
                       tracking-[0.26em]
 
-                      text-timscare-cream/80
+                      text-timscare-cream/85
                     "
                   >
                     Timscare Institut
@@ -607,7 +662,7 @@ export default async function ServicePage({
                 </div>
               </div>
 
-              {/* LIGNE TERRACOTTA */}
+              {/* TRAIT */}
 
               <div
                 className="
@@ -630,8 +685,6 @@ export default async function ServicePage({
                   lg:-left-8
                 "
               />
-
-              {/* POINT */}
 
               <span
                 className="
@@ -689,7 +742,9 @@ export default async function ServicePage({
               <p
                 className="
                   text-[9px]
+
                   uppercase
+
                   tracking-[0.3em]
 
                   text-timscare-terracotta
@@ -760,6 +815,276 @@ export default async function ServicePage({
         </section>
 
         {/* =====================================================
+            AMBIANCE VISAGE
+            ===================================================== */}
+
+        {isVisage && (
+          <section
+            className="
+              overflow-hidden
+              bg-timscare-cream
+            "
+          >
+            <div
+              className="
+                mx-auto
+                max-w-7xl
+
+                px-5
+                py-20
+
+                sm:px-6
+
+                md:px-8
+                md:py-28
+              "
+            >
+              {/* INTRO */}
+
+              <div
+                className="
+                  grid
+                  gap-8
+
+                  lg:grid-cols-[0.8fr_1.2fr]
+                  lg:items-end
+                  lg:gap-20
+                "
+              >
+                <div>
+                  <p
+                    className="
+                      text-[9px]
+
+                      uppercase
+
+                      tracking-[0.3em]
+
+                      text-timscare-terracotta
+                    "
+                  >
+                    L’univers du soin
+                  </p>
+
+                  <h2
+                    className="
+                      mt-4
+
+                      max-w-xl
+
+                      text-4xl
+
+                      font-medium
+
+                      leading-[0.98]
+
+                      tracking-[-0.045em]
+
+                      text-timscare-brown
+
+                      sm:text-5xl
+
+                      lg:text-6xl
+                    "
+                  >
+                    Préparer.
+                    <br />
+                    Prendre soin.
+                    <br />
+                    Laisser respirer.
+                  </h2>
+                </div>
+
+                <p
+                  className="
+                    max-w-xl
+
+                    text-sm
+                    leading-7
+
+                    text-timscare-brown/60
+
+                    sm:text-base
+                    sm:leading-8
+
+                    lg:ml-auto
+                  "
+                >
+                  Quelques détails de l’univers Timscare,
+                  de la préparation du soin au moment de
+                  détente.
+                </p>
+              </div>
+
+              {/* PHOTOS */}
+
+              <div
+                className="
+                  mt-12
+
+                  grid
+                  grid-cols-2
+                  gap-3
+
+                  sm:gap-4
+
+                  lg:mt-16
+                  lg:grid-cols-12
+                "
+              >
+                {/* MATÉRIEL */}
+
+                <div
+                  className="
+                    relative
+
+                    col-span-2
+
+                    aspect-[4/3]
+
+                    overflow-hidden
+
+                    rounded-[2rem_2rem_4rem_2rem]
+
+                    bg-timscare-beige
+
+                    lg:col-span-5
+                    lg:aspect-[4/5]
+                    lg:rounded-[2.5rem_2.5rem_6rem_2.5rem]
+                  "
+                >
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,#fffaf5_0%,#f2d7b8_30%,rgba(175,86,30,.68)_68%,#482412_120%)]" />
+
+                  <div
+                    className="
+                      pointer-events-none
+                      absolute
+                      inset-0
+
+                      bg-gradient-to-t
+
+                      from-timscare-brown/20
+                      via-transparent
+                      to-transparent
+                    "
+                  />
+
+                  <div
+                    className="
+                      absolute
+
+                      bottom-4
+                      left-4
+
+                      rounded-full
+
+                      border
+                      border-white/20
+
+                      bg-timscare-brown/35
+
+                      px-4
+                      py-2
+
+                      backdrop-blur-md
+                    "
+                  >
+                    <span
+                      className="
+                        text-[7px]
+
+                        uppercase
+
+                        tracking-[0.28em]
+
+                        text-white
+                      "
+                    >
+                      La préparation
+                    </span>
+                  </div>
+                </div>
+
+                {/* DROITE */}
+
+                <div
+                  className="
+                    col-span-2
+
+                    grid
+                    grid-cols-2
+                    gap-3
+
+                    sm:gap-4
+
+                    lg:col-span-7
+                    lg:grid-cols-1
+                  "
+                >
+                  {/* TEXTURE */}
+
+                  <div
+                    className="
+                      relative
+
+                      aspect-[3/4]
+
+                      overflow-hidden
+
+                      rounded-[1.5rem_1.5rem_3.5rem_1.5rem]
+
+                      bg-timscare-beige
+
+                      lg:aspect-auto
+                      lg:min-h-[270px]
+                      lg:rounded-[2rem]
+                    "
+                  >
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,#fffaf5_0%,#f2d7b8_35%,rgba(175,86,30,.58)_100%)]" />
+                  </div>
+
+                  {/* MOMENT DE DÉTENTE */}
+
+                  <div
+                    className="
+                      relative
+
+                      aspect-[3/4]
+
+                      overflow-hidden
+
+                      rounded-[1.5rem_3.5rem_1.5rem_1.5rem]
+
+                      bg-timscare-beige
+
+                      lg:aspect-auto
+                      lg:min-h-[270px]
+                      lg:rounded-[2rem_4.5rem_2rem_2rem]
+                    "
+                  >
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_25%,#fffaf5_0%,#f2d7b8_30%,rgba(72,36,18,.65)_115%)]" />
+
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        inset-0
+
+                        bg-gradient-to-t
+
+                        from-timscare-brown/15
+                        via-transparent
+                        to-transparent
+                      "
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
             DÉTAILS DU SOIN
             ===================================================== */}
 
@@ -791,7 +1116,9 @@ export default async function ServicePage({
                   <p
                     className="
                       text-[9px]
+
                       uppercase
+
                       tracking-[0.3em]
 
                       text-timscare-terracotta
@@ -836,9 +1163,13 @@ export default async function ServicePage({
                 >
                   {service.details.map(
                     (detail, index) => {
-                      const number = String(
-                        index + 1,
-                      ).padStart(2, "0");
+                      const number =
+                        String(
+                          index + 1,
+                        ).padStart(
+                          2,
+                          "0",
+                        );
 
                       const alignRight =
                         index % 2 === 1;
@@ -867,8 +1198,6 @@ export default async function ServicePage({
                             }
                           `}
                         >
-                          {/* GRAND NUMÉRO */}
-
                           <span
                             className="
                               pointer-events-none
@@ -896,8 +1225,6 @@ export default async function ServicePage({
                             {number}
                           </span>
 
-                          {/* CONTENU */}
-
                           <div
                             className="
                               relative
@@ -916,6 +1243,7 @@ export default async function ServicePage({
                                 shrink-0
 
                                 text-[9px]
+
                                 font-medium
 
                                 tracking-[0.25em]
@@ -1030,7 +1358,9 @@ export default async function ServicePage({
             <p
               className="
                 text-[9px]
+
                 uppercase
+
                 tracking-[0.35em]
 
                 text-timscare-beige/50
@@ -1073,7 +1403,6 @@ export default async function ServicePage({
 
         {/* =====================================================
             CTA FINAL
-            UN SEUL BOUTON RENDEZ-VOUS
             ===================================================== */}
 
         <section className="bg-[#fffaf5]">
@@ -1156,7 +1485,9 @@ export default async function ServicePage({
                 <p
                   className="
                     text-[9px]
+
                     uppercase
+
                     tracking-[0.3em]
 
                     text-timscare-terracotta
@@ -1168,7 +1499,6 @@ export default async function ServicePage({
                 <h2
                   className="
                     mt-4
-
                     max-w-2xl
 
                     text-4xl
@@ -1201,7 +1531,9 @@ export default async function ServicePage({
                   <span
                     className="
                       text-[9px]
+
                       uppercase
+
                       tracking-[0.25em]
 
                       text-timscare-brown/35
@@ -1230,9 +1562,7 @@ export default async function ServicePage({
                 </div>
               </div>
 
-              {/* =================================================
-                  UNIQUE CTA
-                  ================================================= */}
+              {/* CTA VISUEL POUR L'INSTANT */}
 
               <div
                 className="
