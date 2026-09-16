@@ -1421,19 +1421,17 @@ export default function TimscarePage() {
                   mt-8
 
                   flex
-                  flex-col
-                  gap-2
-
-                  sm:flex-row
 
                   lg:mt-0
                 "
               >
                 <Link
-                  href="/prestations"
+                  href="/contact"
                   className="
                     inline-flex
                     min-h-14
+
+                    w-full
 
                     items-center
                     justify-center
@@ -1449,38 +1447,13 @@ export default function TimscarePage() {
 
                     text-timscare-brown
 
-                    transition
+                    transition-all
+                    duration-300
 
-                    hover:opacity-90
-                  "
-                >
-                  Choisir un soin
-                </Link>
+                    hover:-translate-y-0.5
+                    hover:shadow-[0_14px_35px_rgba(72,36,18,0.16)]
 
-                <Link
-                  href="/contact"
-                  className="
-                    inline-flex
-                    min-h-14
-
-                    items-center
-                    justify-center
-
-                    rounded-full
-
-                    border
-                    border-timscare-cream/25
-
-                    px-7
-
-                    text-sm
-                    font-medium
-
-                    text-timscare-cream
-
-                    transition
-
-                    hover:bg-timscare-cream/10
+                    sm:w-auto
                   "
                 >
                   Contacter Timscare

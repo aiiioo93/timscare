@@ -1,6 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 
 import { timscareVisuals } from "@/data/timscare-visuals";
 
@@ -105,53 +103,7 @@ export function RealExperience() {
               professionnel et entièrement consacré à votre moment.
             </p>
 
-            <Link
-              href="/timscare"
-              className="
-                group
-
-                mt-6
-
-                inline-flex
-                items-center
-                gap-3
-
-                text-sm
-                font-medium
-
-                text-timscare-brown
-              "
-            >
-              Découvrir Timscare
-
-              <span
-                className="
-                  flex
-                  h-9
-                  w-9
-
-                  items-center
-                  justify-center
-
-                  rounded-full
-
-                  border
-                  border-timscare-brown/15
-
-                  transition-all
-                  duration-300
-
-                  group-hover:rotate-45
-                  group-hover:bg-timscare-brown
-                  group-hover:text-timscare-cream
-                "
-              >
-                <ArrowUpRight
-                  size={14}
-                  strokeWidth={1.6}
-                />
-              </span>
-            </Link>
+          
           </div>
         </div>
 

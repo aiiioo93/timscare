@@ -23,6 +23,11 @@ const navItems = [
   },
   {
     number: "04",
+    label: "Qui suis-je",
+    href: "/qui-suis-je",
+  },
+  {
+    number: "05",
     label: "Contact",
     href: "/contact",
   },
